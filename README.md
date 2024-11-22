@@ -1,2 +1,2 @@
 # crazy_koala
-HRI2025 UI for surface
+UI for surface

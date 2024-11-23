@@ -17,6 +17,7 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 # from kivy.animation import Animation
 
+
 class PhotoAudioScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -26,12 +27,12 @@ class PhotoAudioScreen(BaseScreen):
         
         self.camera = None  # 摄像头实例
         self.preview_mode = False  # 是否为预览模式
-        self.default_photo_path = "/Users/guojing/comp/HRI2025/crazy_koala/assets/f_photo.jpg" # defalt figure path
+        self.default_photo_path = "assets\default_photo.jpg" # defalt figure path
         
         self.recording_active = False
         self.record_timer = 0
         self.max_duration = 60  # 最长录音时长，单位为秒
-        self.default_audio_path = "/Users/guojing/comp/HRI2025/crazy_koala/assets/f_20241122_025002.wav"
+        self.default_audio_path = "assets\default_audio.wav"
         
         self.mode = "deposit"
 
@@ -70,7 +71,7 @@ class PhotoAudioScreen(BaseScreen):
 
         # 图标（默认状态图标）
         self.status_icon = Image(
-            source="/Users/guojing/comp/HRI2025/crazy_koala/assets/image copy 3.png",  # 替换为你的图标路径
+            source="assets\image copy.png",  # 替换为你的图标路径
             size_hint=(0.1, 1)
         )
         self.status_layout.add_widget(self.status_icon)

@@ -1,6 +1,8 @@
 from kivy.config import Config
-Config.set("graphics", "width", "1280")
-Config.set("graphics", "height", "720")
+Config.set("graphics", "fullscreen", "auto")  # 全屏模式
+Config.set("graphics", "borderless", "1")  # 无边框窗口
+Config.set("graphics", "width", "1440")
+Config.set("graphics", "height", "900")
 Config.set("graphics", "resizable", False)
 
 from kivy.app import App

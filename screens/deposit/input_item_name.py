@@ -4,7 +4,6 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from screens.components import BaseScreen, RoundedButton
 from kivy.uix.gridlayout import GridLayout
-from database.db_operations import insert_deposit
 import os
 
 class CustomKeyboard(BoxLayout):
@@ -31,38 +30,39 @@ class CustomKeyboard(BoxLayout):
             cols=10,
             spacing=2,
             size_hint=(1, None),  # 占满宽度，高度为固定值
-            height=600,  # 设置总高度，与功能键一致
+            height=300,  # 设置总高度，与功能键一致
         )
         for row in self.layout:
             for key in row:
                 button = Button(
                     text=key.upper() if self.is_caps else key,
                     size_hint=(1, 1),  # 按键均匀分布
+                    font_size=24,
                 )
                 button.bind(on_press=self.key_press)
                 keyboard_layout.add_widget(button)
         self.add_widget(keyboard_layout)
 
         # 功能键部分
-        function_layout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=150, spacing=2)
+        function_layout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=75, spacing=2)
 
         # 大小写切换键
-        caps_lock = Button(text="Caps", size_hint=(0.2, 1))
+        caps_lock = Button(text="Caps", size_hint=(0.2, 1), font_size=24,)
         caps_lock.bind(on_press=self.toggle_caps)
         function_layout.add_widget(caps_lock)
 
         # 空格键
-        space = Button(text="Space", size_hint=(0.4, 1))
+        space = Button(text="Space", size_hint=(0.4, 1), font_size=24,)
         space.bind(on_press=self.space_press)
         function_layout.add_widget(space)
 
         # 退格键
-        backspace = Button(text="Delete", size_hint=(0.2, 1))
+        backspace = Button(text="Delete", size_hint=(0.2, 1), font_size=24,)
         backspace.bind(on_press=self.backspace_press)
         function_layout.add_widget(backspace)
         
         # 清空键
-        clear = Button(text="Clear", size_hint=(0.2, 1))
+        clear = Button(text="Clear", size_hint=(0.2, 1), font_size=24,)
         clear.bind(on_press=self.clear_text)
         function_layout.add_widget(clear)
 
@@ -111,7 +111,7 @@ class InputNameScreen(BaseScreen):
         # 添加输入框提示文字
         prompt_label = Label(
             text="Please enter your item name:",
-            font_size=48,
+            font_size=36,
             color=(0, 0, 0, 1),  # 黑色字体
             halign="left",
             valign="center",
@@ -122,7 +122,7 @@ class InputNameScreen(BaseScreen):
 
         self.input_box = TextInput(
             hint_text="Input Item Name...",
-            font_size=48,
+            font_size=36,
             multiline=True,
             # halign="center",
             size_hint=(1, 0.1),
@@ -145,7 +145,7 @@ class InputNameScreen(BaseScreen):
         # Back 按钮
         back_button = RoundedButton(
             text="BACK",
-            font_size=48,
+            font_size=24,
             size_hint=(0.4, 1),
             custom_color=(0.9, 0.9, 0.9, 1)  # Gray
         )
@@ -156,7 +156,7 @@ class InputNameScreen(BaseScreen):
         # Next 按钮     
         next_button = RoundedButton(
             text="NEXT",
-            font_size=48,
+            font_size=24,
             size_hint=(0.4, 1),
             custom_color=(0.9, 0.9, 0.9, 1)  # Gray
         )
@@ -191,6 +191,7 @@ class InputNameScreen(BaseScreen):
         name = self.input_box.text.strip()
         if not name:
             print("Name cannot be empty!")
+            self.show_error_popup(f"Item name cannot be empty!")
             return
 
         # 检查是否有重复文件夹
@@ -198,7 +199,7 @@ class InputNameScreen(BaseScreen):
         if os.path.exists(folder_path):
             print(f"A folder with the name '{name}' already exists. Please choose a different name.")
             # 显示一个提示对话框或在界面上更新提示
-            self.show_error_popup(f"A folder with the name '{name}' already exists.\nPlease choose a different name.")
+            self.show_error_popup(f"An item with the name '{name}' already exists.\nPlease choose a different name.")
             return
 
         # 文件夹不存在，正常跳转
@@ -216,8 +217,8 @@ class InputNameScreen(BaseScreen):
 
         # 创建一个布局
         layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
-        layout.add_widget(Label(text=message, font_size=48))
-        close_button = Button(text="OK", size_hint=(1, 0.3))
+        layout.add_widget(Label(text=message, font_size=36))
+        close_button = Button(text="OK", size_hint=(1, 0.3), font_size=24)
         layout.add_widget(close_button)
 
         # 创建弹窗
@@ -225,7 +226,7 @@ class InputNameScreen(BaseScreen):
             title="Invalid Input",
             content=layout,
             size_hint=(0.6, 0.4),
-            auto_dismiss=False
+            auto_dismiss=False,
         )
 
         # 绑定关闭按钮

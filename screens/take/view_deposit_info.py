@@ -1,14 +1,14 @@
-from kivy.uix.gridlayout import GridLayout
+# from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage  # 用于加载图片
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
-from database.db_operations import fetch_unretrieved_items
+# from kivy.uix.scrollview import ScrollView
+# from database.db_operations import fetch_unretrieved_items
 from screens.components import BaseScreen, RoundedButton, YellowTitleBar
 import os
-from pydub import AudioSegment
-from pydub.playback import play
+from playsound import playsound
+
 class ViewDepositInfoScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -117,8 +117,7 @@ class ViewDepositInfoScreen(BaseScreen):
         if os.path.exists(self.audio_path):
             self.audio_label.text = "Audio: Playing..."
             try:
-                audio = AudioSegment.from_file(self.audio_path)
-                play(audio)
+                playsound(self.audio_path)  # 使用 playsound 播放音频
                 self.audio_label.text = "Audio: Finish Playing"
             except Exception as e:
                 print(f"Error playing audio: {e}")

@@ -3,7 +3,9 @@ from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
 from kivy.uix.button import Button
 from screens.components import BaseScreen, YellowTitleBar
+from playsound import playsound
 import os
+
 
 class ViewMemoriesDetailScreen(BaseScreen):
     def __init__(self, **kwargs):
@@ -89,14 +91,14 @@ class ViewMemoriesDetailScreen(BaseScreen):
         self.play_deposit_audio_button = Button(
             text="Play Deposit Audio",
             size_hint=(0.5, 1),
-            on_press=self.play_deposit_audio,
+            on_press=lambda instance: self.play_audio("deposit_audio_path"),
         )
         audio_controls.add_widget(self.play_deposit_audio_button)
 
         self.play_taken_audio_button = Button(
             text="Play Taken Audio",
             size_hint=(0.5, 1),
-            on_press=self.play_taken_audio,
+            on_press=lambda instance: self.play_audio("taken_audio_path"),
         )
         audio_controls.add_widget(self.play_taken_audio_button)
 
@@ -120,37 +122,18 @@ class ViewMemoriesDetailScreen(BaseScreen):
         else:
             print("No item to display!")
 
-    def play_deposit_audio(self, instance):
-        """播放存储音频"""
+    def play_audio(self, audio_type):
+        """播放音频"""
         current_item = self.manager.current_item
-        audio_path = current_item.get("deposit_audio_path", "") if current_item else ""
+        audio_path = current_item.get(audio_type, "") if current_item else ""
         if audio_path and os.path.exists(audio_path):
-            from pydub import AudioSegment
-            from pydub.playback import play
-
             try:
-                audio = AudioSegment.from_file(audio_path)
-                play(audio)
+                playsound(audio_path)
+                print(f"Finished playing {audio_type} audio.")
             except Exception as e:
-                print(f"Error playing deposit audio: {e}")
+                print(f"Error playing {audio_type} audio: {e}")
         else:
-            print("Deposit audio not found!")
-
-    def play_taken_audio(self, instance):
-        """播放取走音频"""
-        current_item = self.manager.current_item
-        audio_path = current_item.get("taken_audio_path", "") if current_item else ""
-        if audio_path and os.path.exists(audio_path):
-            from pydub import AudioSegment
-            from pydub.playback import play
-
-            try:
-                audio = AudioSegment.from_file(audio_path)
-                play(audio)
-            except Exception as e:
-                print(f"Error playing taken audio: {e}")
-        else:
-            print("Taken audio not found!")
+            print(f"{audio_type.replace('_', ' ').title()} not found!")
 
     def go_back(self, instance):
         """返回到上一个界面"""

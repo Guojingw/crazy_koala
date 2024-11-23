@@ -36,7 +36,7 @@ class OpenDoorScreen(BaseScreen):
             padding=20
         )
         self.image = Image(
-            source="/Users/guojing/comp/HRI2025/crazy_koala/assets/image copy 4.png",  # 默认仓门关闭图片
+            source="assets\image copy 4.png",  # 默认仓门关闭图片
             size_hint=(1, 1)
         )
         left_col.add_widget(self.image)

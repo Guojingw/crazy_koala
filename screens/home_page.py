@@ -25,7 +25,7 @@ class HomePage(BaseScreen):
 
         # 添加左侧图片
         img = Image(
-            source="/Users/guojing/comp/HRI2025/crazy_koala/assets/image.png",  # 替换为图片路径
+            source="assets\image.png",  # 替换为图片路径
             allow_stretch=True,
             keep_ratio=True
         )
@@ -124,7 +124,7 @@ class ChooseInteractType(BaseScreen):
         )
         # 插入图片
         hint_image = Image(
-            source="/Users/guojing/comp/HRI2025/crazy_koala/assets/image copy.png",  # 替换为图片路径
+            source="assets\image copy.png",  # 替换为图片路径
             allow_stretch=True,
             keep_ratio=True,
             size_hint=(0.3, 1),  # 控制图片尺寸

@@ -24,7 +24,7 @@ class BaseScreen(Screen):
       
 
 class RoundedButton(Button):
-    def __init__(self, custom_color=(1, 1, 1, 1), corner_radius=50, **kwargs):
+    def __init__(self, custom_color=(0, 0, 0, 1), corner_radius=30, **kwargs):
         """
         Rounded Button with customizable corner radius.
         

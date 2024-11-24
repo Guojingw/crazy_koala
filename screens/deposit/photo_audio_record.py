@@ -3,7 +3,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 # from kivy.uix.button import Button
-from screens.components import BaseScreen, RoundedButton
+from screens.components import BaseScreen, RoundedButton, YellowBar
 # from kivy.uix.gridlayout import GridLayout
 from database.db_operations import insert_deposit, update_taken
 
@@ -34,33 +34,85 @@ class PhotoAudioScreen(BaseScreen):
         self.max_duration = 60  # 最长录音时长，单位为秒
         self.default_audio_path = "assets\default_audio.wav"
         
-        self.mode = "deposit"
+        self.mode = None
 
-        # 主布局
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=50,
+        )
+
+        if self.mode == "deposit":
+           title_text="DEPOSIT"
+        else:
+            title_text="TAKE"
+        
+        title_bar = YellowBar(
+            title_text,
+        )
+        layout.add_widget(title_bar)
+        
         main_layout = BoxLayout(
             orientation="horizontal",
-            spacing=50,
-            padding=[100, 100, 100, 100],
+            spacing=100,
+            padding=[80, 20, 80, 20],
         )
         
         first_col = BoxLayout(
             orientation="vertical",
             spacing=50,
-            size_hint=(0.6, 1),
+            size_hint=(0.5, 1),
         )
         
-        self.image_widget = Image(size_hint=(1, 0.7))
+        # self.image_widget = Image(size_hint=(1, 0.7))
+        # first_col.add_widget(self.image_widget)
+        camera_aspect_ratio = 4 / 3
+
+        self.image_widget = Image(
+            size_hint=(1, None),  # 宽度占满，固定高度
+            height=300,  # 初始高度，可以动态调整
+            allow_stretch=True,  # 允许拉伸
+            keep_ratio=True,  # 保持宽高比例
+        )
         first_col.add_widget(self.image_widget)
+
+        # 动态调整图片高度以匹配比例
+        def update_image_height(*args):
+            container_width = first_col.width  # 获取容器宽度
+            self.image_widget.height = container_width / camera_aspect_ratio  # 高度 = 宽度 / 比例
+
+        # 绑定窗口大小变化时调整高度
+        first_col.bind(width=update_image_height)
+
+        
+        button_layout = BoxLayout(
+            orientation="horizontal",
+            size_hint=(1, 0.1),
+            spacing=20
+        )
 
         # 摄像头按钮
         self.camera_frame = RoundedButton(
-            text="Click to open camera",
-            font_size=48,
-            size_hint=(1, 0.1),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
+            text="Open Camera",
+            font_size=36,
+            size_hint=(1, 1),
+            custom_color=(0, 0, 0, 1),  # Gray
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
-        first_col.add_widget(self.camera_frame)
+        button_layout.add_widget(self.camera_frame)
         self.camera_frame.bind(on_press=self.toggle_camera_preview)
+
+        self.record_button = RoundedButton(
+            text="Record Audio",
+            font_size=36,
+            size_hint=(1, 1),
+            custom_color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+        )
+        button_layout.add_widget(self.record_button)
+        self.record_button.bind(on_press=self.toggle_recording)
+
+        first_col.add_widget(button_layout)
+    
         
         # 状态标签
         self.status_layout = BoxLayout(
@@ -79,22 +131,15 @@ class PhotoAudioScreen(BaseScreen):
         # 标签
         self.status_label = Label(
             text="Ready to record audio",
-            font_size=24,
+            font_size=36,
             color=(0, 0, 0, 1),
-            size_hint=(0.9, 1)
+            size_hint=(0.9, 1),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.status_layout.add_widget(self.status_label)
 
         first_col.add_widget(self.status_layout)
         
-        self.record_button = RoundedButton(
-            text="Click to record audio",
-            font_size=48,
-            size_hint=(1, 0.1),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
-        )
-        first_col.add_widget(self.record_button)
-        self.record_button.bind(on_press=self.toggle_recording)
         
 
         second_col = BoxLayout(
@@ -106,30 +151,40 @@ class PhotoAudioScreen(BaseScreen):
         # 提示文本
         text_label = Label(
             text="Do you want to take a photo\nor leave a audio message?",
-            font_size=48,
+            font_size=36,
             halign="left",
             valign="middle",
             color=(0, 0, 0, 1),
-            size_hint=(1, 0.6)
+            size_hint=(1, 0.6),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
+            
         )
         second_col.add_widget(text_label)
 
         # 底部按钮
         button_layout = BoxLayout(orientation="horizontal", spacing=20, size_hint=(1, 0.1))
-        back_button = RoundedButton(
-            text="BACK",
-            font_size=48,
-            size_hint=(0.4, 0.65),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
-        )
-        button_layout.add_widget(back_button)
-        back_button.bind(on_press=self.go_back)
+        if self.mode == "deposit":
+            back_button = RoundedButton(
+                text="BACK",
+                font_size=24,
+                size_hint=(None, 0.7),
+                width=200,
+                custom_color=(0.451, 0.776, 0.855, 1),  # 蓝色
+                font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+            )
+            button_layout.add_widget(back_button)
+            back_button.bind(on_press=self.go_back)
+
+        spacer = BoxLayout(size_hint=(1, 1))
+        button_layout.add_widget(spacer)
         
         next_button = RoundedButton(
             text="NEXT",
-            font_size=48,
-            size_hint=(0.4, 0.65),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
+            font_size=24,
+            size_hint=(None, 0.7),
+            width=200,
+            custom_color=(0.933, 0.757, 0.318, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         button_layout.add_widget(next_button)
         next_button.bind(on_press=self.go_next)
@@ -139,8 +194,14 @@ class PhotoAudioScreen(BaseScreen):
         main_layout.add_widget(first_col)
         main_layout.add_widget(second_col)
 
-        # 添加按钮布局到主界面
-        self.add_widget(main_layout)
+        layout.add_widget(main_layout)
+
+        end_bar = YellowBar(
+            title_text="",
+        )
+        layout.add_widget(end_bar)
+
+        self.add_widget(layout)
 
 
     def toggle_camera_preview(self, instance):
@@ -152,7 +213,7 @@ class PhotoAudioScreen(BaseScreen):
                 print("Error: Cannot access the camera")
                 return
             self.preview_mode = True
-            self.camera_frame.text = "Click to capture photo"
+            self.camera_frame.text = "Capture Photo"
             Clock.schedule_interval(self.update_camera_preview, 1.0 / 30.0)  # 每秒30帧
         else:
             # 捕获照片并关闭摄像头预览
@@ -177,7 +238,7 @@ class PhotoAudioScreen(BaseScreen):
                 self.camera.release()
                 self.camera = None
                 self.preview_mode = False
-                self.camera_frame.text = "Click to open camera"
+                self.camera_frame.text = "Open Camera"
                 Clock.unschedule(self.update_camera_preview)
 
                 # 显示静态照片
@@ -264,7 +325,7 @@ class PhotoAudioScreen(BaseScreen):
                 wf.writeframes(self.recording[:int(self.record_timer * self.fs)].tobytes())
 
             self.status_label.text = "Recording saved!"
-            self.record_button.text = "Start Recording"
+            self.record_button.text = "Record Audio"
             print(f"Audio saved at {self.audio_path}")
         except Exception as e:
             print(f"Error stopping recording: {e}")
@@ -283,9 +344,9 @@ class PhotoAudioScreen(BaseScreen):
         self.photo_path = None
         self.audio_path = None
         self.image_widget.texture = None  # 清空图片预览
-        self.camera_frame.text = "Click to open camera"
+        self.camera_frame.text = "Open Camera"
         self.status_label.text = "Ready to record audio"
-        self.record_button.text = "Click to record audio"
+        self.record_button.text = "Record audio"
         self.recording_active = False
         self.record_timer = 0
         self.preview_mode = False

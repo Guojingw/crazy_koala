@@ -1,4 +1,10 @@
 from kivy.config import Config
+Config.set("graphics", "fullscreen", "auto")  # 全屏模式
+Config.set("graphics", "borderless", "1")  # 无边框窗口
+Config.set("graphics", "width", "1440")
+Config.set("graphics", "height", "900")
+Config.set("graphics", "resizable", False)
+
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from screens.home_page import HomePage, ChooseInteractType
@@ -16,12 +22,6 @@ from kivy.clock import Clock
 import serial
 import threading
 import time
-
-Config.set("graphics", "fullscreen", "auto")  # 全屏模式
-Config.set("graphics", "borderless", "1")  # 无边框窗口
-Config.set("graphics", "width", "1440")
-Config.set("graphics", "height", "900")
-Config.set("graphics", "resizable", False)
 
 class MyScreenManager(ScreenManager):
     def __init__(self, **kwargs):

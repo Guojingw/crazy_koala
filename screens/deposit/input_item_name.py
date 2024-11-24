@@ -1,8 +1,9 @@
+from tkinter import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from screens.components import BaseScreen, RoundedButton
+from screens.components import BaseScreen, RoundedButton, YellowBar
 from kivy.uix.gridlayout import GridLayout
 import os
 
@@ -38,6 +39,7 @@ class CustomKeyboard(BoxLayout):
                     text=key.upper() if self.is_caps else key,
                     size_hint=(1, 1),  # 按键均匀分布
                     font_size=24,
+                    font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
                 )
                 button.bind(on_press=self.key_press)
                 keyboard_layout.add_widget(button)
@@ -47,22 +49,22 @@ class CustomKeyboard(BoxLayout):
         function_layout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=75, spacing=2)
 
         # 大小写切换键
-        caps_lock = Button(text="Caps", size_hint=(0.2, 1), font_size=24,)
+        caps_lock = Button(text="Caps", size_hint=(0.2, 1), font_size=24,font_name="assets/fonts/Poppins/Poppins-Medium.ttf")
         caps_lock.bind(on_press=self.toggle_caps)
         function_layout.add_widget(caps_lock)
 
         # 空格键
-        space = Button(text="Space", size_hint=(0.4, 1), font_size=24,)
+        space = Button(text="Space", size_hint=(0.4, 1), font_size=24,font_name="assets/fonts/Poppins/Poppins-Medium.ttf")
         space.bind(on_press=self.space_press)
         function_layout.add_widget(space)
 
         # 退格键
-        backspace = Button(text="Delete", size_hint=(0.2, 1), font_size=24,)
+        backspace = Button(text="Delete", size_hint=(0.2, 1), font_size=24,font_name="assets/fonts/Poppins/Poppins-Medium.ttf")
         backspace.bind(on_press=self.backspace_press)
         function_layout.add_widget(backspace)
         
         # 清空键
-        clear = Button(text="Clear", size_hint=(0.2, 1), font_size=24,)
+        clear = Button(text="Clear", size_hint=(0.2, 1), font_size=24,font_name="assets/fonts/Poppins/Poppins-Medium.ttf")
         clear.bind(on_press=self.clear_text)
         function_layout.add_widget(clear)
 
@@ -95,16 +97,26 @@ class CustomKeyboard(BoxLayout):
 class InputNameScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=50,
+        )
+
+        title_bar = YellowBar(
+            title_text="DEPOSIT",
+        )
+        layout.add_widget(title_bar)
         
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=50,
-            padding=[100, 100, 100, 100],  # Padding: [left, top, right, bottom]
+            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
         )
         
         first_row = BoxLayout(
             orientation="vertical",
-            spacing=50,  # Space between buttons
+            spacing=20,  # Space between buttons
             size_hint=(1, 0.9),  # Occupy 30% of the height
         )
 
@@ -116,17 +128,18 @@ class InputNameScreen(BaseScreen):
             halign="left",
             valign="center",
             size_hint=(1, 0.1),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         prompt_label.bind(size=prompt_label.setter("text_size"))
         first_row.add_widget(prompt_label)
 
         self.input_box = TextInput(
             hint_text="Input Item Name...",
-            font_size=36,
+            font_size=28,
             multiline=True,
-            # halign="center",
             size_hint=(1, 0.1),
             background_color=(0.9, 0.9, 0.9, 1),
+            font_name="assets/fonts/Poppins/Poppins-Light.ttf"
         )
         first_row.add_widget(self.input_box)
 
@@ -138,7 +151,7 @@ class InputNameScreen(BaseScreen):
         # 添加按钮布局
         second_row = BoxLayout(
             orientation="horizontal",
-            spacing=50,
+            spacing=0,
             size_hint=(1, 0.1),
         )
 
@@ -146,19 +159,25 @@ class InputNameScreen(BaseScreen):
         back_button = RoundedButton(
             text="BACK",
             font_size=24,
-            size_hint=(0.4, 1),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
+            size_hint=(None, 1),
+            width=200,
+            custom_color=(0.451, 0.776, 0.855, 1),  # 蓝色
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         second_row.add_widget(back_button)
         back_button.bind(on_press=self.go_back)
         
+        spacer = BoxLayout(size_hint=(1, 1))  # 使用 BoxLayout 占位
+        second_row.add_widget(spacer)
 
         # Next 按钮     
         next_button = RoundedButton(
             text="NEXT",
             font_size=24,
-            size_hint=(0.4, 1),
-            custom_color=(0.9, 0.9, 0.9, 1)  # Gray
+            size_hint=(None, 1),
+            width=200,
+            custom_color=(0.933, 0.757, 0.318, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         second_row.add_widget(next_button)
         next_button.bind(on_press=self.go_to_photo_screen)
@@ -166,20 +185,28 @@ class InputNameScreen(BaseScreen):
         main_layout.add_widget(first_row)
         main_layout.add_widget(second_row)
 
-        # 添加按钮布局到主界面
-        self.add_widget(main_layout)
+        layout.add_widget(main_layout)
+
+        end_bar = YellowBar(
+            title_text="",
+        )
+        layout.add_widget(end_bar)
+
+        self.add_widget(layout)
 
     def key_down_handler(self, keyboard, keycode, text, modifiers):
         """处理键盘按下事件"""
-        if text:  # 确保按下的键是字符
+        if text:
             self.input_box.text += text
-        elif keycode[1] == "backspace":  # 如果按下退格键
+        elif keycode[1] == "backspace":
             self.input_box.text = self.input_box.text[:-1]
+    
+    def set_mode(self, mode):
+        self.mode = mode
             
     def reset(self):
         """重置输入框内容"""
-        self.input_box.text = ""  # 清空输入框
-
+        self.input_box.text = ""
 
     def go_back(self, instance):
         """返回操作"""
@@ -203,8 +230,11 @@ class InputNameScreen(BaseScreen):
             return
 
         # 文件夹不存在，正常跳转
-        self.reset()  
+        self.reset() 
+        
         self.manager.get_screen("photo_audio_screen").item_name = name
+        photo_audio_screen = self.manager.get_screen("photo_audio_screen")
+        photo_audio_screen.set_mode("deposit")
         self.manager.current = "photo_audio_screen"
 
     

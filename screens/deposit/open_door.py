@@ -3,7 +3,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 # from kivy.uix.button import Button
-from screens.components import BaseScreen, RoundedButton
+from screens.components import BaseScreen, RoundedButton, YellowBar
 # from kivy.uix.gridlayout import GridLayout
 # from database.db_operations import insert_deposit
 
@@ -24,11 +24,26 @@ class OpenDoorScreen(BaseScreen):
         super().__init__(**kwargs)
         self.mode = None
 
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=50,
+        )
+
+        if self.mode == "deposit":
+           title_text="DEPOSIT"
+        else:
+            title_text="TAKE"
+        
+        title_bar = YellowBar(
+            title_text,
+        )
+        layout.add_widget(title_bar)
+
         # 主布局
         main_layout = BoxLayout(
-            orientation="horizontal",
+            orientation="vertical",
             spacing=50,
-            padding=[100, 100, 100, 100],
+            padding=[100, 20, 100, 20],
         )
         
         # 左侧：图像部分
@@ -51,11 +66,12 @@ class OpenDoorScreen(BaseScreen):
         )
         self.instruction_label = Label(
             text="Open the door to store item",
-            font_size=48,
+            font_size=36,
             halign="center",
             valign="middle",
             color=(0, 0, 0, 1),
-            size_hint=(1, 0.8)
+            size_hint=(1, 0.8),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         
         self.instruction_label.bind(size=self.instruction_label.setter('text_size'))
@@ -67,20 +83,14 @@ class OpenDoorScreen(BaseScreen):
             spacing=20,
             size_hint=(1, 0.1)
         )
-        # back_button = RoundedButton(
-        #     text="BACK",
-        #     font_size=32,
-        #     size_hint=(0.4, 1),
-        #     custom_color=(0.5, 0.7, 1, 1)
-        # )
-        # back_button.bind(on_press=self.go_back)
-        # button_layout.add_widget(back_button)
 
         next_button = RoundedButton(
             text="NEXT",
-            font_size=48,
-            size_hint=(0.4, 1),
-            custom_color=(1, 0.8, 0.3, 1)
+            font_size=24,
+            size_hint=(None, 0.7),
+            width=200,
+            custom_color=(0.933, 0.757, 0.318, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         next_button.bind(on_press=self.go_next)
         button_layout.add_widget(next_button)
@@ -91,25 +101,18 @@ class OpenDoorScreen(BaseScreen):
         main_layout.add_widget(left_col)
         main_layout.add_widget(right_col)
 
-        self.add_widget(main_layout)
+        layout.add_widget(main_layout)
+
+        end_bar = YellowBar(
+            title_text="",
+        )
+        layout.add_widget(end_bar)
+
+        self.add_widget(layout)
     
     def on_enter(self):
         print("Entering OpenDoorScreen...")
         self.manager.trigger_open_door()
-
-    
-    # async def send_open_door_signal(self):
-    #     """异步发送 byte4 信号"""
-    #     try:
-    #         reader, writer = await serial_asyncio.open_serial_connection(url="COM4", baudrate=115200)
-    #         print("Sending byte4 to open the door...")
-    #         writer.write(bytes([4]))  # 发送 byte4
-    #         await writer.drain()
-    #         writer.close()
-    #         await writer.wait_closed()
-    #         print("byte4 sent successfully.")
-    #     except Exception as e:
-    #         print(f"Error sending byte4: {e}")
 
     def toggle_door(self):
         """模拟打开或关闭仓门"""

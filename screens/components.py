@@ -102,6 +102,42 @@ class YellowTitleBar(BoxLayout):
         """更新标题"""
         self.title_label.text = title_text
 
+class YellowBar(BoxLayout):
+    def __init__(self, title_text="Title", **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "horizontal"
+        self.size_hint = (1, 0.08)  # 高度为总高度的 10%
+        self.padding = [10, 5, 10, 5]  # 左、上、右、下的内边距
+        self.spacing = 10  # 子组件之间的间距
+
+        # 设置背景颜色
+        with self.canvas.before:
+            Color(1, 0.9, 0, 1)  # 黄色背景
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(size=self.update_rect, pos=self.update_rect)
+
+
+        # 添加标题文本
+        self.title_label = Label(
+            text=title_text,
+            size_hint=(0.7, 1),  # 占整个 bar 宽度的 70%
+            color=(0, 0, 0, 1),  # 黑色文字
+            font_size=36,  # 调整字体大小
+            halign="center",
+            valign="middle",
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
+        )
+        self.title_label.bind(size=self.title_label.setter("text_size"))
+        self.add_widget(self.title_label)
+
+    def update_rect(self, *args):
+        """更新背景矩形的尺寸和位置"""
+        self.rect.size = self.size
+        self.rect.pos = self.pos
+    
+    def update_title(self, title_text):
+        """更新标题"""
+        self.title_label.text = title_text
 
 class AudioPlayer():
     def __init__(self, **kwargs):

@@ -1,23 +1,8 @@
-
-# from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-# from kivy.uix.button import Button
 from screens.components import BaseScreen, RoundedButton, YellowBar
-# from kivy.uix.gridlayout import GridLayout
-# from database.db_operations import insert_deposit
-
-# import cv2
-# import sounddevice as sd
-# import wave
-# import os
-# from datetime import datetime
 from kivy.uix.image import Image
-# from kivy.clock import Clock
-# from kivy.graphics.texture import Texture
-# from kivy.animation import Animation
-import asyncio
-import serial_asyncio
+
 
 class OpenDoorScreen(BaseScreen):
     def __init__(self, **kwargs):
@@ -41,7 +26,7 @@ class OpenDoorScreen(BaseScreen):
 
         # 主布局
         main_layout = BoxLayout(
-            orientation="vertical",
+            orientation="horizontal",
             spacing=50,
             padding=[100, 20, 100, 20],
         )
@@ -83,11 +68,14 @@ class OpenDoorScreen(BaseScreen):
             spacing=20,
             size_hint=(1, 0.1)
         )
+        
+        spacer = BoxLayout(size_hint=(1, 1))  # 使用 BoxLayout 占位
+        button_layout.add_widget(spacer)
 
         next_button = RoundedButton(
             text="NEXT",
             font_size=24,
-            size_hint=(None, 0.7),
+            size_hint=(None, 1),
             width=200,
             custom_color=(0.933, 0.757, 0.318, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
@@ -123,9 +111,6 @@ class OpenDoorScreen(BaseScreen):
             self.image.source = "/Users/guojing/comp/HRI2025/crazy_koala/assets/image.png"
             self.instruction_label.text = "Close the door after storing the item."
 
-    # def go_back(self, instance):
-    #     """返回上一界面"""
-    #     self.manager.current = "photo_audio_screen"
     
     def set_mode(self, mode):
         self.mode = mode

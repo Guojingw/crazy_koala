@@ -36,16 +36,40 @@ class HomePage(BaseScreen):
 
         # 主标题
         title_label = Label(
-            text="Connect our community\nTogether",
-            font_size=55,
+            text="Connect to our community\nTogether",
+            font_size=72,
             color=(0, 0, 0, 1),  # 黑色字体
-            halign="center",
-            valign="middle",
-            size_hint=(1, 0.5)  # 占用右侧布局的一部分高度
+            halign="left",
+            valign="bottom",
+            size_hint=(1, 0.5),  # 占用右侧布局的一部分高度
+            font_name="assets/fonts/Poppins/Poppins-ExtraBold.ttf"  # 设置自定义字体
         )
         title_label.bind(size=title_label.setter("text_size"))  # 动态调整文字区域
 
         text_layout.add_widget(title_label)
+
+        second_label = Label(
+            text="For better future",
+            font_size=48,
+            color=(0, 0, 0, 1),  # 黑色字体
+            halign="left",
+            valign="top",
+            size_hint=(1, 0.3),  # 占用右侧布局的一部分高度
+            font_name="assets/fonts/Poppins/Poppins-LightItalic.ttf"  # 设置自定义字体
+        )
+        second_label.bind(size=second_label.setter("text_size"))  # 动态调整文字区域
+
+        text_layout.add_widget(second_label)
+
+        start_button = RoundedButton(
+            text="Press Koala Nose To Start",
+            font_size=36,
+            size_hint=(1, 0.1),  # Button width is 40% of row width
+            custom_color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+        )
+        text_layout.add_widget(start_button)
+        # start_button.bind(on_press=self.check_interact_allowed)
 
         # 将文字布局添加到主布局
         layout.add_widget(text_layout)

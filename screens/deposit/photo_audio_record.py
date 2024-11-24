@@ -311,7 +311,7 @@ class PhotoAudioScreen(BaseScreen):
             print("Item name is required to create folder!")
             return
 
-        self.folder_path = f"data/{self.item_name}"
+        self.folder_path = f"data\{self.item_name}"
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)
             print(f"Folder created: {self.folder_path}")

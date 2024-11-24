@@ -1,10 +1,4 @@
 from kivy.config import Config
-Config.set("graphics", "fullscreen", "auto")  # 全屏模式
-Config.set("graphics", "borderless", "1")  # 无边框窗口
-Config.set("graphics", "width", "1440")
-Config.set("graphics", "height", "900")
-Config.set("graphics", "resizable", False)
-
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from screens.home_page import HomePage, ChooseInteractType
@@ -15,12 +9,27 @@ from screens.take.select_take_item import SelectTakeItemScreen
 from screens.take.view_deposit_info import ViewDepositInfoScreen
 from screens.memories.select_memories import HappyMemoriesScreen
 from screens.memories.view_memories_details import ViewMemoriesDetailScreen
+from screens.components import AudioPlayer
 from database.db_setup import initialize_database
+from kivy.clock import Clock
+
+import serial
+import threading
+import time
+
+Config.set("graphics", "fullscreen", "auto")  # 全屏模式
+Config.set("graphics", "borderless", "1")  # 无边框窗口
+Config.set("graphics", "width", "1440")
+Config.set("graphics", "height", "900")
+Config.set("graphics", "resizable", False)
 
 class MyScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.current_item = {}
+        self.audio_player = AudioPlayer()
+        self.open_door_triggered  = False
+
         self.add_widget(HomePage(name="home"))
         self.add_widget(ChooseInteractType(name="choose_interact_type"))
         self.add_widget(InputNameScreen(name="input_name_screen"))
@@ -31,10 +40,74 @@ class MyScreenManager(ScreenManager):
         self.add_widget(HappyMemoriesScreen(name="happy_memories_screen"))
         self.add_widget(ViewMemoriesDetailScreen(name="view_memories_details_screen"))
 
+    def switch_to_choose_type(self):
+        """切换到选择交互类型的屏幕"""
+        self.current = "choose_interact_type"
+    
+    def switch_back_to_home(self):
+        """切换到选择交互类型的屏幕"""
+        self.current = "home"
+    
+    def trigger_open_door(self):
+        """设置开门触发器"""
+        self.open_door_triggered = True
+        print("Trigger set: open_door_triggered = True")
+
+    def play_audio(self, audio_path):
+        self.audio_player.play_audio(audio_path)
+
 class CrazyKoalaApp(App):
     def build(self):
-        return MyScreenManager()
+        self.screen_manager = MyScreenManager()
+        return self.screen_manager
 
+    def on_start(self):
+        # 启动串口通信线程
+        self.serial_thread = threading.Thread(target=self.serial_comm, daemon=True)
+        self.serial_thread.start()
+
+    def serial_comm(self):
+        """串口通信线程"""
+        try:
+            ser = serial.Serial("COM4", baudrate=115200, timeout=1)
+            print("Serial connection established.")
+
+            while True:
+                # 检查是否有数据可读取
+                if ser.in_waiting > 0:
+                    data = ser.read(1)  # 读取1字节数据
+                    if data:
+                        number = int.from_bytes(data, byteorder="little")
+                        print(f"Received: {number}")
+                        Clock.schedule_once(lambda dt: self.handle_serial_input(number, ser))
+
+                # 检查开门触发器
+                if self.screen_manager.open_door_triggered:
+                    print("Sending open door signal (byte4).")
+                    ser.write(bytes([4]))  # 发送开门信号
+                    self.screen_manager.open_door_triggered = False
+
+                time.sleep(0.05)  # 降低CPU占用率
+        except Exception as e:
+            print(f"Error in serial communication: {e}")
+
+    def handle_serial_input(self, number, ser):
+        """处理接收到的串口输入"""
+        if number == 0:
+            print("Action: Play Goodbye audio.")
+            self.screen_manager.switch_back_to_home()
+            self.screen_manager.play_audio("assets\goodbye.wav")
+        elif number == 1:
+            print("Action: Play welcome audio.")
+            self.screen_manager.play_audio("assets\start_hello.wav")
+        elif number == 3:
+            print("Action: Allow interaction.")
+            self.screen_manager.switch_to_choose_type()
+        elif number == 5:
+            print("Action: Play meet people audio.")
+            self.screen_manager.play_audio("assets\default_audio.wav")
+        else:
+            print(f"Unhandled input: {number}")
 
 if __name__ == "__main__":
     initialize_database()

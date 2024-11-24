@@ -4,6 +4,9 @@ from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from playsound import playsound
+import os
+import threading
 
 class BaseScreen(Screen):
     def __init__(self, **kwargs):
@@ -98,3 +101,27 @@ class YellowTitleBar(BoxLayout):
     def update_title(self, title_text):
         """更新标题"""
         self.title_label.text = title_text
+
+
+class AudioPlayer():
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def play_audio(self, file_path=None):
+        """播放音频"""
+        if not file_path or not os.path.exists(file_path):
+            print("Audio File Not Found!")
+            return
+
+        print(f"Playing Audio: {file_path}")
+        
+        # 使用线程播放音频，避免阻塞主线程
+        threading.Thread(target=self._play_audio_thread, args=(file_path,), daemon=True).start()
+
+    def _play_audio_thread(self, file_path):
+        """在线程中播放音频"""
+        try:
+            playsound(file_path)
+            print("Audio Playback Complete")
+        except Exception as e:
+            print(f"Error playing audio: {e}")

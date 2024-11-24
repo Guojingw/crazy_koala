@@ -16,6 +16,8 @@ from kivy.uix.image import Image
 # from kivy.clock import Clock
 # from kivy.graphics.texture import Texture
 # from kivy.animation import Animation
+import asyncio
+import serial_asyncio
 
 class OpenDoorScreen(BaseScreen):
     def __init__(self, **kwargs):
@@ -90,6 +92,24 @@ class OpenDoorScreen(BaseScreen):
         main_layout.add_widget(right_col)
 
         self.add_widget(main_layout)
+    
+    def on_enter(self):
+        print("Entering OpenDoorScreen...")
+        self.manager.trigger_open_door()
+
+    
+    # async def send_open_door_signal(self):
+    #     """异步发送 byte4 信号"""
+    #     try:
+    #         reader, writer = await serial_asyncio.open_serial_connection(url="COM4", baudrate=115200)
+    #         print("Sending byte4 to open the door...")
+    #         writer.write(bytes([4]))  # 发送 byte4
+    #         await writer.drain()
+    #         writer.close()
+    #         await writer.wait_closed()
+    #         print("byte4 sent successfully.")
+    #     except Exception as e:
+    #         print(f"Error sending byte4: {e}")
 
     def toggle_door(self):
         """模拟打开或关闭仓门"""

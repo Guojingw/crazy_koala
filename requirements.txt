@@ -5,4 +5,4 @@ sounddevice==0.4.6
 pydub==0.25.1
 numpy==1.23.5
 playsound>=1.2.2
-
+pyserial-asyncio==0.5

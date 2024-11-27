@@ -29,6 +29,7 @@ class MyScreenManager(ScreenManager):
         self.current_item = {}
         self.audio_player = AudioPlayer()
         self.open_door_triggered  = False
+        self.mode = None
 
         self.add_widget(HomePage(name="home"))
         self.add_widget(ChooseInteractType(name="choose_interact_type"))

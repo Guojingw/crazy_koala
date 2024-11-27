@@ -16,8 +16,10 @@ class OpenDoorScreen(BaseScreen):
 
         if self.mode == "deposit":
            title_text="DEPOSIT"
+           interact_text = "Open the door to store item"
         else:
             title_text="TAKE"
+            interact_text = "Open the door to get item"
         
         title_bar = YellowBar(
             title_text,
@@ -50,7 +52,7 @@ class OpenDoorScreen(BaseScreen):
             padding=20
         )
         self.instruction_label = Label(
-            text="Open the door to store item",
+            text=interact_text,
             font_size=36,
             halign="center",
             valign="middle",

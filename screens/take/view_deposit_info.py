@@ -3,8 +3,6 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage  # 用于加载图片
 from kivy.uix.boxlayout import BoxLayout
-# from kivy.uix.scrollview import ScrollView
-# from database.db_operations import fetch_unretrieved_items
 from screens.components import BaseScreen, RoundedButton, YellowTitleBar
 import os
 from playsound import playsound
@@ -14,7 +12,25 @@ class ViewDepositInfoScreen(BaseScreen):
         super().__init__(**kwargs)
 
         # 主布局
-        main_layout = BoxLayout(orientation="vertical", spacing=20, padding=20)
+        # main_layout = BoxLayout(orientation="vertical", spacing=20, padding=20)
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+        )
+
+        main_layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+            padding=[20, 20, 20, 20],  # Padding: [left, top, right, bottom]
+        )
+
+        # 添加 YellowBar
+        self.title_bar = YellowTitleBar(
+            title_text="Item Name",  # Placeholder text, will update on_enter
+            button_text="BACK",
+            on_button_press=self.go_back,
+        )
+        main_layout.add_widget(self.title_bar)
 
         # 图片展示
         self.image_display = AsyncImage(
@@ -100,6 +116,9 @@ class ViewDepositInfoScreen(BaseScreen):
         """根据当前选择的物品设置界面内容"""
         current_item = self.manager.current_item
         if current_item:
+            # Update the title bar with the item name
+            self.title_bar.update_title(current_item.get("name", "No Name Available"))
+
             self.image_path = current_item.get("image_path", "")
             self.audio_path = current_item.get("audio_path", "")
             self.image_display.source = self.image_path if os.path.exists(self.image_path) else ""
@@ -134,4 +153,3 @@ class ViewDepositInfoScreen(BaseScreen):
         open_door_screen = self.manager.get_screen("open_door_screen")
         open_door_screen.set_mode(mode)
         self.manager.current = "open_door_screen"
-

@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
 from kivy.uix.button import Button
-from screens.components import BaseScreen, YellowTitleBar
+from screens.components import BaseScreen, YellowBar, YellowTitleBar
 from playsound import playsound
 import os
 
@@ -13,6 +13,11 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         # 主布局
         self.main_layout = BoxLayout(orientation="vertical", spacing=20, padding=20)
+
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=50,
+        )
 
         # 标题栏
         self.title_bar = YellowTitleBar(

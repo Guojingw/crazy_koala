@@ -12,14 +12,25 @@ class SelectTakeItemScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+        )
+
         # 创建主布局
-        main_layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
+        main_layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+            padding=[20, 20, 20, 20],  # Padding: [left, top, right, bottom]
+        )
 
         # 添加标题栏
-        title_bar = BoxLayout(orientation="horizontal", size_hint=(1, 0.1))
-        title_bar = YellowTitleBar(title_text="Select the item you want to check", button_text="BACK", on_button_press=self.go_back)
-
-        main_layout.add_widget(title_bar)
+        title_bar = YellowTitleBar(
+            title_text="Select the item you want to check",
+            button_text="BACK",
+            on_button_press=self.go_back
+        )
+        layout.add_widget(title_bar)
 
         # 添加滚动区域
         scroll_view = ScrollView(size_hint=(1, 0.9))
@@ -28,7 +39,8 @@ class SelectTakeItemScreen(BaseScreen):
         scroll_view.add_widget(self.item_grid)
 
         main_layout.add_widget(scroll_view)
-        self.add_widget(main_layout)
+        layout.add_widget(main_layout)
+        self.add_widget(layout)
 
         # 加载物品
         self.load_items()
@@ -45,8 +57,8 @@ class SelectTakeItemScreen(BaseScreen):
             clickable_area = BoxLayout(
                 orientation="vertical",
                 size_hint_y=None,
-                height=400,  # 固定高度
-                padding=10,  # 增加内边距
+                height=300,  # 固定高度
+                padding=(5, 5, 5, 5),
             )
 
             # 添加图片
@@ -55,26 +67,28 @@ class SelectTakeItemScreen(BaseScreen):
                     source=photo_path,
                     allow_stretch=True,
                     keep_ratio=True,  # 确保图片比例一致
-                    size_hint=(1, 0.9),  # 图片占据 80% 高度
+                    size_hint=(1, 0.8),  # 图片占据 80% 高度
                 )
             else:
                 img = Label(
                     text="No Image",
-                    size_hint=(1, 0.9),
+                    size_hint=(1, 0.8),
                     color=(0, 0, 0, 1),
                     halign="center",
                     valign="middle",
+                    font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
                 )
             clickable_area.add_widget(img)
 
             # 添加物品名称
             label = Label(
                 text=name,
-                font_size=36,
+                font_size=24,
                 color=(0, 0, 0, 1),
-                size_hint=(1, 0.2),  # 调整名称高度为 20%
+                size_hint=(1, 0.2),
                 halign="center",
                 valign="middle",
+                font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
             )
             label.bind(size=label.setter("text_size"))
             clickable_area.add_widget(label)
@@ -87,7 +101,7 @@ class SelectTakeItemScreen(BaseScreen):
         # 计算需要补充的空白占位符
         empty_slots = cols - (total_items % cols) if total_items % cols != 0 else 0
         for _ in range(empty_slots):
-            empty_box = BoxLayout(size_hint_y=None, height=300)  # 空白占位符
+            empty_box = BoxLayout(size_hint_y=None, height=100)  # 空白占位符
             self.item_grid.add_widget(empty_box)
 
     def handle_touch(self, instance, touch, name):

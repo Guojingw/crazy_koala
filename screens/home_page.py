@@ -195,13 +195,23 @@ class ChooseInteractType(BaseScreen):
 
         # Add the main layout to the screen
         self.add_widget(layout)
+    
+    def set_mode(self, mode):
+        """设置当前界面的模式"""
+        self.mode = mode
+        if self.mode == "deposit":
+            print("Mode set to DEPOSIT")
+        elif self.mode == "take":
+            print("Mode set to TAKE")
         
     def go_to_input_name_screen(self, instance):
         """跳转到 InputNameScreen"""
+        self.manager.mode = "deposit"
         self.manager.current = "input_name_screen"
     
     def go_to_select_take_screen(self, instance):
         """跳转到 SelectTakeItemScreen"""
+        self.manager.mode = "take"
         take_item_screen = self.manager.get_screen("select_take_screen")
         take_item_screen.load_items()  # 重新加载物品
         self.manager.current = "select_take_screen"

@@ -12,8 +12,11 @@ class HappyMemoriesScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        
+
         # 主布局
         main_layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
+
 
         # 添加标题栏
         title_bar = YellowTitleBar(
@@ -38,14 +41,14 @@ class HappyMemoriesScreen(BaseScreen):
     def load_items(self):
         """加载所有存储和取走信息完整的物品"""
         self.item_grid.clear_widgets()
-        items = fetch_all_items()  # 获取所有符合条件的物品
+        items = fetch_all_items()
 
         if not items:
             print("No items to display.")
             return
 
         total_items = len(items)
-        cols = 4  # 每行固定4列
+        cols = 4
 
         for item in items:
             try:
@@ -56,8 +59,8 @@ class HappyMemoriesScreen(BaseScreen):
                 clickable_area = BoxLayout(
                     orientation="vertical",
                     size_hint_y=None,
-                    height=400,  # 固定高度
-                    padding=10,  # 增加内边距
+                    height=300,  # 固定高度
+                    padding=(5, 5, 5, 5),
                 )
 
                 # 添加图片
@@ -66,26 +69,28 @@ class HappyMemoriesScreen(BaseScreen):
                         source=photo_path,
                         allow_stretch=True,
                         keep_ratio=True,  # 确保图片比例一致
-                        size_hint=(1, 0.9),  # 图片占据 80% 高度
+                        size_hint=(1, 0.8),  # 图片占据 80% 高度
                     )
                 else:
                     img = Label(
                         text="No Image",
-                        size_hint=(1, 0.9),
+                        size_hint=(1, 0.8),
                         color=(0, 0, 0, 1),
                         halign="center",
                         valign="middle",
+                        font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
                     )
                 clickable_area.add_widget(img)
 
                 # 添加物品名称
                 label = Label(
                     text=name,
-                    font_size=36,
+                    font_size=24,
                     color=(0, 0, 0, 1),
                     size_hint=(1, 0.2),  # 调整名称高度为 20%
                     halign="center",
                     valign="middle",
+                    font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
                 )
                 label.bind(size=label.setter("text_size"))
                 clickable_area.add_widget(label)
@@ -100,7 +105,7 @@ class HappyMemoriesScreen(BaseScreen):
         # 计算需要补充的空白占位符
         empty_slots = cols - (total_items % cols) if total_items % cols != 0 else 0
         for _ in range(empty_slots):
-            empty_box = BoxLayout(size_hint_y=None, height=300)  # 空白占位符
+            empty_box = BoxLayout(size_hint_y=None, height=100)  # 空白占位符
             self.item_grid.add_widget(empty_box)
 
 

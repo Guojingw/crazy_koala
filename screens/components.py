@@ -59,7 +59,7 @@ class YellowTitleBar(BoxLayout):
     def __init__(self, title_text="Title", button_text="BACK", on_button_press=None, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.size_hint = (1, 0.1)  # 高度为总高度的 10%
+        self.size_hint = (1, 0.08)  # 高度为总高度的 10%
         self.padding = [10, 5, 10, 5]  # 左、上、右、下的内边距
         self.spacing = 10  # 子组件之间的间距
 
@@ -72,11 +72,14 @@ class YellowTitleBar(BoxLayout):
         # 添加返回按钮
         self.back_button = RoundedButton(
             text=button_text,
-            font_size=32,
-            size_hint=(0.1, 0.5),  # 占整个 bar 的宽度 20% 和高度 80%
+            font_size=24,
+            size_hint=(None, 0.8),  # 占整个 bar 的宽度 20% 和高度 80%
+            width=150,
             custom_color=(0, 0, 0, 1),  # 黑色背景
-            corner_radius=20  # 圆角大小
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+            # corner_radius=20  # 圆角大小
         )
+
         if on_button_press:
             self.back_button.bind(on_press=on_button_press)
         self.add_widget(self.back_button)
@@ -84,14 +87,18 @@ class YellowTitleBar(BoxLayout):
         # 添加标题文本
         self.title_label = Label(
             text=title_text,
-            size_hint=(0.7, 1),  # 占整个 bar 宽度的 70%
-            color=(0, 0, 0, 1),  # 黑色文字
-            font_size=48,  # 调整字体大小
+            size_hint=(0.7, 1),
+            color=(0, 0, 0, 1),
+            font_size=36,
             halign="center",
             valign="middle",
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.title_label.bind(size=self.title_label.setter("text_size"))
         self.add_widget(self.title_label)
+
+        self.spacer = BoxLayout(size_hint=(0.1, 1))  # 使用 BoxLayout 占位
+        self.add_widget(self.spacer)
 
     def update_rect(self, *args):
         """更新背景矩形的尺寸和位置"""
@@ -106,7 +113,7 @@ class YellowBar(BoxLayout):
     def __init__(self, title_text="Title", **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.size_hint = (1, 0.08)  # 高度为总高度的 10%
+        self.size_hint = (1, 0.08)
         self.padding = [10, 5, 10, 5]  # 左、上、右、下的内边距
         self.spacing = 10  # 子组件之间的间距
 

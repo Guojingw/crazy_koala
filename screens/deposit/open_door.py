@@ -7,24 +7,17 @@ from kivy.uix.image import Image
 class OpenDoorScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.mode = None
+        # self.mode = "deposit"
 
         layout = BoxLayout(
             orientation="vertical",
             spacing=50,
         )
-
-        if self.mode == "deposit":
-           title_text="DEPOSIT"
-           interact_text = "Open the door to store item"
-        else:
-            title_text="TAKE"
-            interact_text = "Open the door to get item"
         
-        title_bar = YellowBar(
-            title_text,
+        self.title_bar = YellowBar(
+            "",
         )
-        layout.add_widget(title_bar)
+        layout.add_widget(self.title_bar)
 
         # 主布局
         main_layout = BoxLayout(
@@ -52,7 +45,7 @@ class OpenDoorScreen(BaseScreen):
             padding=20
         )
         self.instruction_label = Label(
-            text=interact_text,
+            text="",
             font_size=36,
             halign="center",
             valign="middle",
@@ -71,7 +64,7 @@ class OpenDoorScreen(BaseScreen):
             size_hint=(1, 0.1)
         )
         
-        spacer = BoxLayout(size_hint=(1, 1))  # 使用 BoxLayout 占位
+        spacer = BoxLayout(size_hint=(1, 1))
         button_layout.add_widget(spacer)
 
         next_button = RoundedButton(
@@ -101,7 +94,18 @@ class OpenDoorScreen(BaseScreen):
         self.add_widget(layout)
     
     def on_enter(self):
-        print("Entering OpenDoorScreen...")
+        """动态更新界面"""
+        mode = self.manager.get_mode()  # 获取全局 mode
+        self.mode = mode
+        if mode == "deposit":
+            self.title_bar.update_title("DEPOSIT")
+            self.instruction_label.text = "Open the door to store the item."
+        elif mode == "take":
+            self.title_bar.update_title("TAKE")
+            self.instruction_label.text = "Open the door to retrieve the item."
+        else:
+            self.title_bar.update_title("UNKNOWN")
+            self.instruction_label.text = "Mode not set."
         self.manager.trigger_open_door()
 
     def toggle_door(self):
@@ -119,13 +123,7 @@ class OpenDoorScreen(BaseScreen):
 
     def go_next(self, instance):
         """根据模式决定下一步逻辑"""
-        if self.mode == "take_item":
-
-            # 获取 PhotoAudioScreen 实例
-            photo_audio_screen = self.manager.get_screen("photo_audio_screen")
-            # 设置模式为 take_item
-            photo_audio_screen.set_mode("take_item")
-            # 导航到 PhotoAudioScreen
-            self.manager.current = "photo_audio_screen"
+        if self.mode == "take":
+            self.manager.switch_to("photo_audio_screen", mode="take")
         else:
            self.manager.current = "choose_interact_type"

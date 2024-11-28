@@ -30,14 +30,14 @@ class CustomKeyboard(BoxLayout):
         keyboard_layout = GridLayout(
             cols=10,
             spacing=2,
-            size_hint=(1, None),  # 占满宽度，高度为固定值
-            height=300,  # 设置总高度，与功能键一致
+            size_hint=(1, None),
+            height=300,
         )
         for row in self.layout:
             for key in row:
                 button = Button(
                     text=key.upper() if self.is_caps else key,
-                    size_hint=(1, 1),  # 按键均匀分布
+                    size_hint=(1, 1),
                     font_size=24,
                     font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
                 )
@@ -89,9 +89,8 @@ class CustomKeyboard(BoxLayout):
     def toggle_caps(self, instance):
         """切换大小写"""
         self.is_caps = not self.is_caps
-        self.clear_widgets()  # 清空所有子布局
-        self.create_keyboard()  # 重新创建键盘
-
+        self.clear_widgets()
+        self.create_keyboard()
 
         
 class InputNameScreen(BaseScreen):
@@ -111,13 +110,13 @@ class InputNameScreen(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=50,
-            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
+            padding=[100, 20, 100, 20],
         )
         
         first_row = BoxLayout(
             orientation="vertical",
-            spacing=20,  # Space between buttons
-            size_hint=(1, 0.9),  # Occupy 30% of the height
+            spacing=20,
+            size_hint=(1, 0.9),
         )
 
         # 添加输入框提示文字
@@ -161,13 +160,13 @@ class InputNameScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 1),
             width=200,
-            custom_color=(0.451, 0.776, 0.855, 1),  # 蓝色
+            custom_color=(0.451, 0.776, 0.855, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         second_row.add_widget(back_button)
         back_button.bind(on_press=self.go_back)
         
-        spacer = BoxLayout(size_hint=(1, 1))  # 使用 BoxLayout 占位
+        spacer = BoxLayout(size_hint=(1, 1))
         second_row.add_widget(spacer)
 
         # Next 按钮     
@@ -233,9 +232,11 @@ class InputNameScreen(BaseScreen):
         self.reset() 
         
         self.manager.get_screen("photo_audio_screen").item_name = name
-        photo_audio_screen = self.manager.get_screen("photo_audio_screen")
-        photo_audio_screen.set_mode("deposit")
-        self.manager.current = "photo_audio_screen"
+        # photo_audio_screen = self.manager.get_screen("photo_audio_screen")
+        # photo_audio_screen.set_mode("deposit")
+        # self.manager.current = "photo_audio_screen"
+        self.manager.switch_to("photo_audio_screen", mode="deposit")
+
 
     
     def show_error_popup(self, message):

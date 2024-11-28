@@ -1,21 +1,16 @@
 
-# from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-# from kivy.uix.button import Button
 from screens.components import BaseScreen, RoundedButton, YellowBar
-# from kivy.uix.gridlayout import GridLayout
 from database.db_operations import insert_deposit, update_taken
 
 import cv2
 import sounddevice as sd
 import wave
 import os
-# from datetime import datetime
 from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
-# from kivy.animation import Animation
 
 
 class PhotoAudioScreen(BaseScreen):
@@ -35,21 +30,17 @@ class PhotoAudioScreen(BaseScreen):
         self.default_audio_path = "assets\default_audio.wav"
         
         self.mode = None
+        print(f"[DEBUG] Initialized PhotoAudioScreen with mode: {self.mode}")
 
         layout = BoxLayout(
             orientation="vertical",
             spacing=50,
         )
-
-        if self.mode == "deposit":
-           title_text="DEPOSIT"
-        else:
-            title_text="TAKE"
         
-        title_bar = YellowBar(
-            title_text,
+        self.title_bar = YellowBar(
+            "",
         )
-        layout.add_widget(title_bar)
+        layout.add_widget(self.title_bar)
         
         main_layout = BoxLayout(
             orientation="horizontal",
@@ -62,23 +53,21 @@ class PhotoAudioScreen(BaseScreen):
             spacing=50,
             size_hint=(0.5, 1),
         )
-        
-        # self.image_widget = Image(size_hint=(1, 0.7))
-        # first_col.add_widget(self.image_widget)
+
         camera_aspect_ratio = 4 / 3
 
         self.image_widget = Image(
-            size_hint=(1, None),  # 宽度占满，固定高度
-            height=300,  # 初始高度，可以动态调整
-            allow_stretch=True,  # 允许拉伸
-            keep_ratio=True,  # 保持宽高比例
+            size_hint=(1, None),
+            height=300,
+            allow_stretch=True,
+            keep_ratio=True,
         )
         first_col.add_widget(self.image_widget)
 
         # 动态调整图片高度以匹配比例
         def update_image_height(*args):
-            container_width = first_col.width  # 获取容器宽度
-            self.image_widget.height = container_width / camera_aspect_ratio  # 高度 = 宽度 / 比例
+            container_width = first_col.width
+            self.image_widget.height = container_width / camera_aspect_ratio
 
         # 绑定窗口大小变化时调整高度
         first_col.bind(width=update_image_height)
@@ -139,8 +128,6 @@ class PhotoAudioScreen(BaseScreen):
         self.status_layout.add_widget(self.status_label)
 
         first_col.add_widget(self.status_layout)
-        
-        
 
         second_col = BoxLayout(
             orientation="vertical",
@@ -162,7 +149,10 @@ class PhotoAudioScreen(BaseScreen):
         second_col.add_widget(text_label)
 
         # 底部按钮
-        button_layout = BoxLayout(orientation="horizontal", spacing=20, size_hint=(1, 0.1))
+        self.button_layout = BoxLayout(orientation="horizontal", spacing=20, size_hint=(1, 0.1))
+        
+        print(f"[DEBUG] With mode: {self.mode}")
+
         if self.mode == "deposit":
             back_button = RoundedButton(
                 text="BACK",
@@ -176,7 +166,7 @@ class PhotoAudioScreen(BaseScreen):
             back_button.bind(on_press=self.go_back)
 
         spacer = BoxLayout(size_hint=(1, 1))
-        button_layout.add_widget(spacer)
+        self.button_layout.add_widget(spacer)
         
         next_button = RoundedButton(
             text="NEXT",
@@ -186,10 +176,10 @@ class PhotoAudioScreen(BaseScreen):
             custom_color=(0.933, 0.757, 0.318, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
-        button_layout.add_widget(next_button)
+        self.button_layout.add_widget(next_button)
         next_button.bind(on_press=self.go_next)
         
-        second_col.add_widget(button_layout)
+        second_col.add_widget(self.button_layout)
 
         main_layout.add_widget(first_col)
         main_layout.add_widget(second_col)
@@ -339,11 +329,27 @@ class PhotoAudioScreen(BaseScreen):
         else:
             self.status_label.text = f"Recording... {int(self.record_timer)}s"
             
+    
+    def on_enter(self):
+        """根据全局模式动态更新界面"""
+        mode = self.manager.get_mode()  # 从全局 ScreenManager 获取 mode
+        self.mode = mode
+        if mode == "deposit":
+            self.title_bar.update_title("DEPOSIT")
+            self.status_label.text = "Ready to record audio for deposit."
+            # self.add_back_button(self.button_layout)
+        elif mode == "take":
+            self.title_bar.update_title("TAKE")
+            self.status_label.text = "Ready to record audio for retrieval."
+        else:
+            self.title_bar.update_title("UNKNOWN MODE")
+            self.status_label.text = "Unknown mode. Please check."
+            
     def reset(self):
         """重置界面内容"""
         self.photo_path = None
         self.audio_path = None
-        self.image_widget.texture = None  # 清空图片预览
+        self.image_widget.texture = None
         self.camera_frame.text = "Open Camera"
         self.status_label.text = "Ready to record audio"
         self.record_button.text = "Record audio"
@@ -376,15 +382,6 @@ class PhotoAudioScreen(BaseScreen):
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)
             print(f"Folder created: {self.folder_path}")
-    
-    def set_mode(self, mode):
-        """设置当前界面的模式"""
-        self.mode = mode
-        if self.mode == "deposit":
-            print("Mode set to DEPOSIT")
-        elif self.mode == "take":
-            print("Mode set to TAKE")
-
 
     def go_back(self, instance):
         """返回上一个界面并清理临时数据"""
@@ -420,7 +417,7 @@ class PhotoAudioScreen(BaseScreen):
         """跳过到下一个界面"""
 
         # 更新数据库中的照片和音频路径
-        if self.mode == "deposit":
+        if self.manager.get_mode() == "deposit":
             self.prepare_folder()
             self.photo_path = self.save_file(
                 file_path=self.photo_path,
@@ -446,8 +443,9 @@ class PhotoAudioScreen(BaseScreen):
             print(f"Stored photo: {self.photo_path}, audio: {self.audio_path}")
             
             self.reset()
+            self.manager.switch_to("open_door_screen", mode="deposit")
 
-            self.manager.current = "open_door_screen"
+            # self.manager.current = "open_door_screen"
         else:  # take 模式
             # 假设 current_item 是当前选中的物品
             current_item = self.manager.current_item
@@ -483,7 +481,6 @@ class PhotoAudioScreen(BaseScreen):
 
             self.manager.current_item = None
             self.reset()
-
-            self.manager.current = "choose_interact_type"
+            self.manager.switch_to("choose_interact_type", mode=None)
 
         

@@ -40,9 +40,24 @@ class MyScreenManager(ScreenManager):
         self.add_widget(ViewDepositInfoScreen(name="view_deposit_info_screen"))
         self.add_widget(HappyMemoriesScreen(name="happy_memories_screen"))
         self.add_widget(ViewMemoriesDetailScreen(name="view_memories_details_screen"))
+        
+    def set_mode(self, mode):
+        self.mode = mode
+        
+    def get_mode(self):
+        return self.mode
+    
+    def switch_to(self, screen_name, mode=None):
+        """切换到指定屏幕并设置模式"""
+        if mode:
+            self.set_mode(mode)
+            print(f"[DEBUG] Switching to {screen_name} with mode: {self.mode}")
+        self.current = screen_name
 
     def switch_to_choose_type(self):
         """切换到选择交互类型的屏幕"""
+        self.mode = None
+        self.get_screen("photo_audio_screen").set_mode(None)
         self.current = "choose_interact_type"
     
     def switch_back_to_home(self):

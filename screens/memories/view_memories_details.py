@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
 from kivy.uix.button import Button
-from screens.components import BaseScreen, YellowBar, YellowTitleBar
+from screens.components import BaseScreen, RoundedButton, YellowBar, YellowTitleBar
 from playsound import playsound
 import os
 
@@ -12,20 +12,24 @@ class ViewMemoriesDetailScreen(BaseScreen):
         super().__init__(**kwargs)
 
         # 主布局
-        self.main_layout = BoxLayout(orientation="vertical", spacing=20, padding=20)
-
         layout = BoxLayout(
             orientation="vertical",
-            spacing=50,
+            spacing=20,
         )
 
-        # 标题栏
+        main_layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
+        )
+
+        # 添加 YellowBar
         self.title_bar = YellowTitleBar(
-            title_text="",  # 初始值，稍后会更新
+            title_text="Item Name",  # Placeholder text, will update on_enter
             button_text="BACK",
             on_button_press=self.go_back,
         )
-        self.main_layout.add_widget(self.title_bar)
+        layout.add_widget(self.title_bar)
 
         # 内容布局
         content_layout = BoxLayout(orientation="horizontal", size_hint=(1, 0.8), spacing=20)
@@ -40,6 +44,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
             valign="middle",
             size_hint=(1, 0.1),
             color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         deposit_label.bind(size=deposit_label.setter("text_size"))
         deposit_layout.add_widget(deposit_label)
@@ -48,12 +53,13 @@ class ViewMemoriesDetailScreen(BaseScreen):
         deposit_layout.add_widget(self.deposit_image)
 
         self.deposit_time_label = Label(
-            text="Select the item you want to check",
+            text="deposit_time",
             font_size=48,
             halign="center",
             valign="middle",
             size_hint=(1, 0.2),
             color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.deposit_time_label.bind(size=self.deposit_time_label.setter("text_size"))
         deposit_layout.add_widget(self.deposit_time_label)
@@ -70,6 +76,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
             valign="middle",
             size_hint=(1, 0.1),
             color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         taken_label.bind(size=taken_label.setter("text_size"))
         taken_layout.add_widget(taken_label)
@@ -78,37 +85,51 @@ class ViewMemoriesDetailScreen(BaseScreen):
         taken_layout.add_widget(self.taken_image)
 
         self.taken_time_label = Label(
-            text="Select the item you want to check",
+            text="taken_time",
             font_size=48,
             halign="center",
             valign="middle",
             size_hint=(1, 0.2),
             color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.taken_time_label.bind(size=self.taken_time_label.setter("text_size"))
         taken_layout.add_widget(self.taken_time_label)
 
         content_layout.add_widget(taken_layout)
-        self.main_layout.add_widget(content_layout)
+        main_layout.add_widget(content_layout)
 
         # 音频播放按钮布局
         audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.1), spacing=20)
-        self.play_deposit_audio_button = Button(
+
+        self.play_deposit_audio_button = RoundedButton(
             text="Play Deposit Audio",
+            font_size=36,
             size_hint=(0.5, 1),
-            on_press=lambda instance: self.play_audio("deposit_audio_path"),
+            custom_color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
+            on_press=lambda instance: self.play_audio("deposit_audio_path")
         )
         audio_controls.add_widget(self.play_deposit_audio_button)
-
-        self.play_taken_audio_button = Button(
+        
+        self.play_taken_audio_button = RoundedButton(
             text="Play Taken Audio",
+            font_size=36,
             size_hint=(0.5, 1),
-            on_press=lambda instance: self.play_audio("taken_audio_path"),
+            custom_color=(0, 0, 0, 1),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
+            on_press=lambda instance: self.play_audio("taken_audio_path")
         )
         audio_controls.add_widget(self.play_taken_audio_button)
 
-        self.main_layout.add_widget(audio_controls)
-        self.add_widget(self.main_layout)
+        main_layout.add_widget(audio_controls)
+        layout.add_widget(main_layout)
+        
+        end_bar = YellowBar(
+            title_text="",
+        )
+        layout.add_widget(end_bar)
+        self.add_widget(layout)
 
     def on_enter(self, *args):
         """进入界面时更新内容"""

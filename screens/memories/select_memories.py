@@ -12,11 +12,18 @@ class HappyMemoriesScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        
-
         # 主布局
-        main_layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+        )
 
+        main_layout = BoxLayout(
+            orientation="vertical",
+            spacing=20,
+            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
+        )
+        # main_layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
 
         # 添加标题栏
         title_bar = YellowTitleBar(
@@ -24,7 +31,7 @@ class HappyMemoriesScreen(BaseScreen):
             button_text="BACK",
             on_button_press=self.go_back
         )
-        main_layout.add_widget(title_bar)
+        layout.add_widget(title_bar)
 
         # 添加滚动区域
         scroll_view = ScrollView(size_hint=(1, 0.9))
@@ -33,7 +40,8 @@ class HappyMemoriesScreen(BaseScreen):
         scroll_view.add_widget(self.item_grid)
 
         main_layout.add_widget(scroll_view)
-        self.add_widget(main_layout)
+        layout.add_widget(main_layout)
+        self.add_widget(layout)
 
         # 加载物品
         self.load_items()
@@ -53,7 +61,7 @@ class HappyMemoriesScreen(BaseScreen):
         for item in items:
             try:
                 name = item["name"]
-                photo_path = item["taken_photo_path"]
+                photo_path = item["deposit_photo_path"]
 
                 # 创建一个可点击的区域（BoxLayout）
                 clickable_area = BoxLayout(

@@ -92,7 +92,7 @@ class YellowTitleBar(BoxLayout):
             font_size=36,
             halign="center",
             valign="middle",
-            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         self.title_label.bind(size=self.title_label.setter("text_size"))
         self.add_widget(self.title_label)

@@ -66,8 +66,8 @@ class SelectTakeItemScreen(BaseScreen):
                 img = AsyncImage(
                     source=photo_path,
                     allow_stretch=True,
-                    keep_ratio=True,  # 确保图片比例一致
-                    size_hint=(1, 0.8),  # 图片占据 80% 高度
+                    keep_ratio=True,
+                    size_hint=(1, 0.8),
                 )
             else:
                 img = Label(
@@ -101,22 +101,21 @@ class SelectTakeItemScreen(BaseScreen):
         # 计算需要补充的空白占位符
         empty_slots = cols - (total_items % cols) if total_items % cols != 0 else 0
         for _ in range(empty_slots):
-            empty_box = BoxLayout(size_hint_y=None, height=100)  # 空白占位符
+            empty_box = BoxLayout(size_hint_y=None, height=100)
             self.item_grid.add_widget(empty_box)
 
     def handle_touch(self, instance, touch, name):
         """处理点击事件"""
-        if instance.collide_point(*touch.pos):  # 检查点击是否在组件范围内
+        if instance.collide_point(*touch.pos):
             print(f"Selected item: {name}")
-            self.view_item(name)  # 调用查看详情的逻辑
+            self.view_item(name)
 
     def view_item(self, name):
         """查看物品详情"""
         # 从数据库中获取物品的完整信息
-        item = fetch_item_details(name)  # 自定义函数，从数据库获取对应物品信息
+        item = fetch_item_details(name)
 
         if item:
-            # 将当前物品信息存储到 ScreenManager 中
             self.manager.current_item = {
                 "name": item["name"],
                 "image_path": item["deposit_photo_path"],
@@ -124,7 +123,6 @@ class SelectTakeItemScreen(BaseScreen):
                 "deposit_time": item["deposit_created_at"]
             }
             print(f"Current item set: {self.manager.current_item}")
-            # 切换到下一个界面
             self.manager.current = "view_deposit_info_screen"
         else:
             print(f"Item with name {name} not found!")

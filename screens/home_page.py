@@ -9,13 +9,11 @@ class HomePage(BaseScreen):
         super().__init__(**kwargs)
 
         # 设置主布局
-        # layout = BoxLayout(orientation="horizontal", padding=50, spacing=20)
         layout = BoxLayout(
             orientation="horizontal",
             spacing=50,
             padding=[100, 100, 100, 100],  # Padding: [left, top, right, bottom]
         )
-
 
         # 设置背景颜色为白色
         with self.canvas.before:
@@ -112,14 +110,14 @@ class ChooseInteractType(BaseScreen):
         # First row: DEPOSIT and TAKE buttons
         first_row = BoxLayout(
             orientation="horizontal",
-            spacing=100,  # Space between buttons
-            size_hint=(1, 0.5),  # Occupy 30% of the height
+            spacing=100,
+            size_hint=(1, 0.5),
         )
         deposit_button = RoundedButton(
             text="DEPOSIT",
             font_size=64,
-            size_hint=(0.4, 1),  # Button width is 40% of row width
-            custom_color=(1, 0.8, 0, 1),  # Yellow
+            size_hint=(0.4, 1),
+            custom_color=(1, 0.8, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         first_row.add_widget(deposit_button)
@@ -155,15 +153,14 @@ class ChooseInteractType(BaseScreen):
         hint_layout = BoxLayout(
             orientation="horizontal",
             spacing=10,
-            size_hint=(0.4, 0.5),  # 占用父布局 40% 高度
-            # pos_hint={"center_x": 0.5},  # 水平居中
+            size_hint=(0.4, 0.5),
         )
         # 插入图片
         hint_image = Image(
-            source="assets\image copy.png",  # 替换为图片路径
+            source="assets\image copy.png",
             allow_stretch=True,
             keep_ratio=True,
-            size_hint=(0.3, 1),  # 控制图片尺寸
+            size_hint=(0.3, 1),
         )
         hint_layout.add_widget(hint_image)
 
@@ -171,13 +168,13 @@ class ChooseInteractType(BaseScreen):
         hint_label = Label(
             text="End by pressing nose",
             font_size=36,
-            color=(0, 0, 0, 1),  # 黑色字体
+            color=(0, 0, 0, 1),
             halign="center",
             valign="middle",
             size_hint=(0.7, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
-        hint_label.bind(size=hint_label.setter("text_size"))  # 动态调整文字区域
+        hint_label.bind(size=hint_label.setter("text_size"))
         hint_layout.add_widget(hint_label)
         
         second_row.add_widget(hint_layout)
@@ -192,32 +189,32 @@ class ChooseInteractType(BaseScreen):
         )
         layout.add_widget(end_bar)
 
-
-        # Add the main layout to the screen
         self.add_widget(layout)
     
-    def set_mode(self, mode):
-        """设置当前界面的模式"""
-        self.mode = mode
-        if self.mode == "deposit":
-            print("Mode set to DEPOSIT")
-        elif self.mode == "take":
-            print("Mode set to TAKE")
+    # def set_mode(self, mode):
+    #     """设置当前界面的模式"""
+    #     self.mode = mode
+    #     if self.mode == "deposit":
+    #         print("Mode set to DEPOSIT")
+    #     elif self.mode == "take":
+    #         print("Mode set to TAKE")
         
     def go_to_input_name_screen(self, instance):
         """跳转到 InputNameScreen"""
-        self.manager.mode = "deposit"
-        self.manager.current = "input_name_screen"
+        # self.manager.mode = "deposit"
+        # self.manager.current = "input_name_screen"
+        self.manager.switch_to("input_name_screen", mode="deposit")
     
     def go_to_select_take_screen(self, instance):
         """跳转到 SelectTakeItemScreen"""
-        self.manager.mode = "take"
+        # self.manager.mode = "take"
         take_item_screen = self.manager.get_screen("select_take_screen")
-        take_item_screen.load_items()  # 重新加载物品
-        self.manager.current = "select_take_screen"
+        take_item_screen.load_items()
+        # self.manager.current = "select_take_screen"
+        self.manager.switch_to("select_take_screen", mode="take")
     
     def go_to_select_memeries(self, instance):
         """跳转到 Select memeries"""
         take_item_screen = self.manager.get_screen("happy_memories_screen")
-        take_item_screen.load_items()  # 重新加载物品
+        take_item_screen.load_items()
         self.manager.current = "happy_memories_screen"

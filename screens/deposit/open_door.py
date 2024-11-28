@@ -72,7 +72,7 @@ class OpenDoorScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 1),
             width=200,
-            custom_color=(0.933, 0.757, 0.318, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         next_button.bind(on_press=self.go_next)
@@ -107,19 +107,6 @@ class OpenDoorScreen(BaseScreen):
             self.title_bar.update_title("UNKNOWN")
             self.instruction_label.text = "Mode not set."
         self.manager.trigger_open_door()
-
-    def toggle_door(self):
-        """模拟打开或关闭仓门"""
-        if self.image.source == "/Users/guojing/comp/HRI2025/crazy_koala/assets/image.png":
-            self.image.source = "/Users/guojing/comp/HRI2025/crazy_koala/assets/image copy 4.png"
-            self.instruction_label.text = "The door is open. Place your item."
-        else:
-            self.image.source = "/Users/guojing/comp/HRI2025/crazy_koala/assets/image.png"
-            self.instruction_label.text = "Close the door after storing the item."
-
-    
-    def set_mode(self, mode):
-        self.mode = mode
 
     def go_next(self, instance):
         """根据模式决定下一步逻辑"""

@@ -74,7 +74,7 @@ class YellowTitleBar(BoxLayout):
             text=button_text,
             font_size=24,
             size_hint=(None, 0.8),  # 占整个 bar 的宽度 20% 和高度 80%
-            width=150,
+            width=120,
             custom_color=(0, 0, 0, 1),  # 黑色背景
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
             # corner_radius=20  # 圆角大小

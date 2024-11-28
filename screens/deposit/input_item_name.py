@@ -19,7 +19,7 @@ class CustomKeyboard(BoxLayout):
             "qwertyuiop",
             "asdfghjkl",
             "zxcvbnm",
-            ",.!?;:'\"\\_-[]&",
+            ",.!?;:'\"@_-[]&",
         ]
 
         self.create_keyboard()
@@ -160,7 +160,7 @@ class InputNameScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 1),
             width=200,
-            custom_color=(0.451, 0.776, 0.855, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         second_row.add_widget(back_button)
@@ -175,7 +175,7 @@ class InputNameScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 1),
             width=200,
-            custom_color=(0.933, 0.757, 0.318, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         second_row.add_widget(next_button)

@@ -159,7 +159,7 @@ class PhotoAudioScreen(BaseScreen):
                 font_size=24,
                 size_hint=(None, 0.7),
                 width=200,
-                custom_color=(0.451, 0.776, 0.855, 1),  # 蓝色
+                custom_color=(0, 0, 0, 1),  # 蓝色
                 font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
             )
             button_layout.add_widget(back_button)
@@ -173,7 +173,7 @@ class PhotoAudioScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 0.7),
             width=200,
-            custom_color=(0.933, 0.757, 0.318, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         self.button_layout.add_widget(next_button)

@@ -23,7 +23,7 @@ class HomePage(BaseScreen):
 
         # 添加左侧图片
         img = Image(
-            source="assets\image.png",  # 替换为图片路径
+            source="assets\door_close.png",  # 替换为图片路径
             allow_stretch=True,
             keep_ratio=True
         )
@@ -157,7 +157,7 @@ class ChooseInteractType(BaseScreen):
         )
         # 插入图片
         hint_image = Image(
-            source="assets\image copy.png",
+            source="assets\simple_logo.png",
             allow_stretch=True,
             keep_ratio=True,
             size_hint=(0.3, 1),
@@ -190,14 +190,6 @@ class ChooseInteractType(BaseScreen):
         layout.add_widget(end_bar)
 
         self.add_widget(layout)
-    
-    # def set_mode(self, mode):
-    #     """设置当前界面的模式"""
-    #     self.mode = mode
-    #     if self.mode == "deposit":
-    #         print("Mode set to DEPOSIT")
-    #     elif self.mode == "take":
-    #         print("Mode set to TAKE")
         
     def go_to_input_name_screen(self, instance):
         """跳转到 InputNameScreen"""

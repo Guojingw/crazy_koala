@@ -101,6 +101,7 @@ class CrazyKoalaApp(App):
                 if self.screen_manager.open_door_triggered:
                     print("Sending open door signal (byte4).")
                     ser.write(bytes([4]))  # 发送开门信号
+                    self.screen_manager.play_audio("assets\open_door.wav")
                     self.screen_manager.open_door_triggered = False
 
                 time.sleep(0.05)  # 降低CPU占用率
@@ -112,16 +113,16 @@ class CrazyKoalaApp(App):
         if number == 0:
             print("Action: Play Goodbye audio.")
             self.screen_manager.switch_back_to_home()
-            self.screen_manager.play_audio("assets\goodbye.wav")
+            self.screen_manager.play_audio("assets\good_bye.wav")
         elif number == 1:
             print("Action: Play welcome audio.")
-            self.screen_manager.play_audio("assets\start_hello.wav")
+            self.screen_manager.play_audio("assets\start_interact.wav")
         elif number == 3:
             print("Action: Allow interaction.")
             self.screen_manager.switch_to_choose_type()
         elif number == 5:
             print("Action: Play meet people audio.")
-            self.screen_manager.play_audio("assets\default_audio.wav")
+            self.screen_manager.play_audio("assets\meet_people.wav")
         else:
             print(f"Unhandled input: {number}")
 

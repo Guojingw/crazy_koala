@@ -105,7 +105,7 @@ class ViewDepositInfoScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 0.7),
             width=200,
-            custom_color=(0.451, 0.776, 0.855, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=self.go_back
         )
@@ -120,7 +120,7 @@ class ViewDepositInfoScreen(BaseScreen):
             font_size=24,
             size_hint=(None, 0.7),
             width=200,
-            custom_color=(0.933, 0.757, 0.318, 1),
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=lambda instance: self.navigate_to_open_door(mode="take_item") 
         )
@@ -165,7 +165,7 @@ class ViewDepositInfoScreen(BaseScreen):
                 print(f"Error playing audio: {e}")
                 self.audio_label.text = "Audio: Not Playing"
         else:
-            self.audio_label.text = "Audio: File Not Found"
+            self.audio_label.text = "Audio: No Audio Message Left"
 
     def go_back(self, instance):
         """返回上一个界面"""

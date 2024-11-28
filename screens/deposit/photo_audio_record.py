@@ -71,11 +71,10 @@ class PhotoAudioScreen(BaseScreen):
 
         # 绑定窗口大小变化时调整高度
         first_col.bind(width=update_image_height)
-
         
         button_layout = BoxLayout(
             orientation="horizontal",
-            size_hint=(1, 0.1),
+            size_hint=(1, 0.2),
             spacing=20
         )
 

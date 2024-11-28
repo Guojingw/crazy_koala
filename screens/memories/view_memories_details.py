@@ -38,7 +38,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
         deposit_layout = BoxLayout(orientation="vertical", spacing=10)
         deposit_label = Label(
             text="DEPOSIT",
-            font_size=48,
+            font_size=36,
             bold=True,
             halign="center",
             valign="middle",
@@ -54,7 +54,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         self.deposit_time_label = Label(
             text="deposit_time",
-            font_size=48,
+            font_size=36,
             halign="center",
             valign="middle",
             size_hint=(1, 0.2),
@@ -70,7 +70,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
         taken_layout = BoxLayout(orientation="vertical", spacing=10)
         taken_label = Label(
             text="TAKE",
-            font_size=48,
+            font_size=36,
             bold=True,
             halign="center",
             valign="middle",
@@ -86,7 +86,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         self.taken_time_label = Label(
             text="taken_time",
-            font_size=48,
+            font_size=36,
             halign="center",
             valign="middle",
             size_hint=(1, 0.2),

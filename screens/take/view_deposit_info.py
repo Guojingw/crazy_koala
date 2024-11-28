@@ -23,10 +23,8 @@ class ViewDepositInfoScreen(BaseScreen):
         )
 
         # 添加 YellowBar
-        self.title_bar = YellowTitleBar(
-            title_text="Item Name",
-            button_text="BACK",
-            on_button_press=self.go_back,
+        self.title_bar = YellowBar(
+            title_text="",
         )
         layout.add_widget(self.title_bar)
 
@@ -55,11 +53,11 @@ class ViewDepositInfoScreen(BaseScreen):
         # info_layout.add_widget(self.name_label)
 
         # 音频播放按钮
-        audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.5), spacing=20)
+        audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.7), spacing=20)
         self.play_button = RoundedButton(
             text="Play Audio",
             font_size=24,
-            size_hint=(None, 0.7),
+            size_hint=(None, 0.4),
             width=300,
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=self.play_audio
@@ -68,11 +66,11 @@ class ViewDepositInfoScreen(BaseScreen):
 
         self.audio_label = Label(
             text="Audio: Not Playing",
-            font_size=36,
+            font_size=24,
             color=(0, 0, 0, 1),
             halign="left",
             valign="middle",
-            size_hint=(0.7, 1),
+            size_hint=(0.8, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.audio_label.bind(size=self.audio_label.setter("text_size"))
@@ -85,11 +83,11 @@ class ViewDepositInfoScreen(BaseScreen):
         # 存放时间标签
         self.time_label = Label(
             text="Deposit Time: Not Available",
-            font_size=36,
+            font_size=24,
             color=(0, 0, 0, 1),
             halign="left",
             valign="middle",
-            size_hint=(1, 0.5),
+            size_hint=(0.5, 0.5),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.time_label.bind(size=self.time_label.setter("text_size"))
@@ -103,7 +101,7 @@ class ViewDepositInfoScreen(BaseScreen):
         back_button = RoundedButton(
             text="BACK",
             font_size=24,
-            size_hint=(None, 0.7),
+            size_hint=(None, 0.5),
             width=200,
             custom_color=(0.451, 0.776, 0.855, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
@@ -118,7 +116,7 @@ class ViewDepositInfoScreen(BaseScreen):
         next_button = RoundedButton(
             text="SELECT",
             font_size=24,
-            size_hint=(None, 0.7),
+            size_hint=(None, 0.5),
             width=200,
             custom_color=(0.933, 0.757, 0.318, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",

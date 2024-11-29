@@ -97,7 +97,7 @@ class ChooseInteractType(BaseScreen):
         )
 
         title_bar = YellowBar(
-            title_text="Home Page",
+            title_text="HOME PAGE",
         )
         layout.add_widget(title_bar)
 
@@ -105,14 +105,14 @@ class ChooseInteractType(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=50,
-            padding=[100, 50, 100, 100],  # Padding: [left, top, right, bottom]
+            padding=[100, 50, 100, 10],  # Padding: [left, top, right, bottom]
         )
 
         # First row: DEPOSIT and TAKE buttons
         first_row = BoxLayout(
             orientation="horizontal",
             spacing=100,
-            size_hint=(1, 0.5),
+            size_hint=(1, 0.7),
         )
         deposit_layout = InteractiveBoxLayout(
             orientation="vertical",
@@ -177,13 +177,13 @@ class ChooseInteractType(BaseScreen):
         happiness_layout = InteractiveBoxLayout(
             orientation="horizontal",
             spacing=10,
-            size_hint=(0.4, 1),  # 40% of width
+            size_hint=(0.5, 1),  # 40% of width
         )
         happiness_icon = Image(
             source="assets/happy.png",  # Replace with the actual path to your icon
             allow_stretch=True,
             keep_ratio=True,
-            size_hint=(0.4, 1),
+            size_hint=(0.3, 1),
         )
         happiness_label = Label(
             text="Happiness Memories",
@@ -191,7 +191,7 @@ class ChooseInteractType(BaseScreen):
             color=(0, 0, 0, 1),
             halign="center",
             valign="middle",
-            size_hint=(0.6, 1),
+            size_hint=(0.7, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf",
         )
         happiness_label.bind(size=happiness_label.setter("text_size"))
@@ -203,14 +203,14 @@ class ChooseInteractType(BaseScreen):
         hint_layout = BoxLayout(
             orientation="horizontal",
             spacing=10,
-            size_hint=(0.4, 0.5),
+            size_hint=(0.5, 1),
         )
         # 插入图片
         hint_image = Image(
             source="assets\simple_logo.png",
             allow_stretch=True,
             keep_ratio=True,
-            size_hint=(0.3, 1),
+            size_hint=(0.2, 1),
         )
         hint_layout.add_widget(hint_image)
 
@@ -222,7 +222,7 @@ class ChooseInteractType(BaseScreen):
             halign="center",
             valign="middle",
             size_hint=(0.7, 1),
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         hint_label.bind(size=hint_label.setter("text_size"))
         hint_layout.add_widget(hint_label)

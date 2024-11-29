@@ -47,7 +47,7 @@ class OpenDoorScreen(BaseScreen):
         self.instruction_label = Label(
             text="",
             font_size=36,
-            halign="center",
+            halign="left",
             valign="middle",
             color=(0, 0, 0, 1),
             size_hint=(1, 0.8),

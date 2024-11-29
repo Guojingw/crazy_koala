@@ -76,7 +76,7 @@ class YellowTitleBar(BoxLayout):
             text=button_text,
             font_size=24,
             size_hint=(None, 0.8),  # 占整个 bar 的宽度 20% 和高度 80%
-            width=120,
+            width=140,
             custom_color=(0, 0, 0, 1),  # 黑色背景
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
             # corner_radius=20  # 圆角大小
@@ -94,12 +94,12 @@ class YellowTitleBar(BoxLayout):
             font_size=36,
             halign="center",
             valign="middle",
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.title_label.bind(size=self.title_label.setter("text_size"))
         self.add_widget(self.title_label)
 
-        self.spacer = BoxLayout(size_hint=(0.1, 1))  # 使用 BoxLayout 占位
+        self.spacer = BoxLayout(size_hint=(0.1, 1))
         self.add_widget(self.spacer)
 
     def update_rect(self, *args):

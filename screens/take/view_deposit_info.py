@@ -1,7 +1,7 @@
 # from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.image import AsyncImage  # 用于加载图片
+from kivy.uix.image import AsyncImage
 from kivy.uix.boxlayout import BoxLayout
 from screens.components import BaseScreen, RoundedButton, YellowBar, YellowTitleBar
 import os
@@ -49,16 +49,15 @@ class ViewDepositInfoScreen(BaseScreen):
             valign="middle",
             size_hint=(1, 0.5)
         )
-        # self.name_label.bind(size=self.name_label.setter("text_size"))
-        # info_layout.add_widget(self.name_label)
+
 
         # 音频播放按钮
-        audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.7), spacing=20)
+        audio_controls = BoxLayout(orientation="horizontal", size_hint=(0.5, 0.5), spacing=20)
         self.play_button = RoundedButton(
-            text="Play Audio",
+            text="PLAY AUDIO",
             font_size=24,
-            size_hint=(None, 0.4),
-            width=300,
+            size_hint=(None, 0.8),
+            width=200,
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=self.play_audio
         )
@@ -70,14 +69,14 @@ class ViewDepositInfoScreen(BaseScreen):
             color=(0, 0, 0, 1),
             halign="left",
             valign="middle",
-            size_hint=(0.8, 1),
+            size_hint=(0.6, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.audio_label.bind(size=self.audio_label.setter("text_size"))
         audio_controls.add_widget(self.audio_label)
         info_layout.add_widget(audio_controls)
         
-        spacer = BoxLayout(size_hint=(1, 1))
+        spacer = BoxLayout(size_hint=(0.2, 1))
         info_layout.add_widget(spacer)
         
         # 存放时间标签

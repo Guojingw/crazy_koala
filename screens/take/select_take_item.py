@@ -26,7 +26,7 @@ class SelectTakeItemScreen(BaseScreen):
 
         # 添加标题栏
         title_bar = YellowTitleBar(
-            title_text="Select the item you want to check",
+            title_text="TAKE ITEM",
             button_text="BACK",
             on_button_press=self.go_back
         )

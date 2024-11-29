@@ -5,6 +5,8 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from playsound import playsound
+from kivy.properties import ObjectProperty
+
 import os
 import threading
 
@@ -168,3 +170,20 @@ class AudioPlayer():
             print("Audio Playback Complete")
         except Exception as e:
             print(f"Error playing audio: {e}")
+
+
+class InteractiveBoxLayout(BoxLayout):
+    # 注册一个自定义事件
+    def __init__(self, **kwargs):
+        self.register_event_type('on_press')  # 注册自定义事件
+        super().__init__(**kwargs)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):  # 检查触摸是否在组件范围内
+            self.dispatch('on_press')  # 分发自定义事件
+            return True
+        return super().on_touch_down(touch)
+
+    def on_press(self, *args):
+        """这个方法将由事件监听器调用"""
+        pass

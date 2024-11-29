@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
-from screens.components import BaseScreen, RoundedButton, YellowBar, YellowTitleBar
+from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar, YellowTitleBar
 
 class HomePage(BaseScreen):
     def __init__(self, **kwargs):
@@ -85,6 +85,7 @@ class HomePage(BaseScreen):
         """跳转到第二个页面"""
         self.manager.current = "choose_interact_type"
 
+
 class ChooseInteractType(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -113,26 +114,57 @@ class ChooseInteractType(BaseScreen):
             spacing=100,
             size_hint=(1, 0.5),
         )
-        deposit_button = RoundedButton(
+        deposit_layout = InteractiveBoxLayout(
+            orientation="vertical",
+            spacing=10,
+            size_hint=(0.4, 1),  # 40% of width
+        )
+        deposit_icon = Image(
+            source="assets/deposit.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(1, 0.8),
+        )
+        deposit_label = Label(
             text="DEPOSIT",
-            font_size=64,
-            size_hint=(0.4, 1),
-            custom_color=(1, 0.8, 0, 1),
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+            font_size=48,
+            color=(0, 0, 0, 1),
+            halign="center",
+            valign="middle",
+            size_hint=(1, 0.2),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
         )
-        first_row.add_widget(deposit_button)
-        deposit_button.bind(on_press=self.go_to_input_name_screen)
+        deposit_label.bind(size=deposit_label.setter("text_size"))
+        deposit_layout.add_widget(deposit_icon)
+        deposit_layout.add_widget(deposit_label)
+        deposit_layout.bind(on_press=self.go_to_input_name_screen)
+        first_row.add_widget(deposit_layout)
         
-        take_button = RoundedButton(
-            text="TAKE",
-            font_size=64,
-            size_hint=(0.4, 1),
-            custom_color=(0.6, 1, 0.6, 1),  # Green
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+        take_layout = InteractiveBoxLayout(
+            orientation="vertical",
+            spacing=10,
+            size_hint=(0.4, 1),  # 40% of width
         )
-
-        first_row.add_widget(take_button)
-        take_button.bind(on_press=self.go_to_select_take_screen)
+        take_icon = Image(
+            source="assets/take.png",  # Replace with the actual path to your icon
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(1, 0.8),
+        )
+        take_label = Label(
+            text="TAKE",
+            font_size=48,
+            color=(0, 0, 0, 1),
+            halign="center",
+            valign="middle",
+            size_hint=(1, 0.2),
+            font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
+        )
+        take_label.bind(size=take_label.setter("text_size"))
+        take_layout.add_widget(take_icon)
+        take_layout.add_widget(take_label)
+        take_layout.bind(on_press=self.go_to_select_take_screen)
+        first_row.add_widget(take_layout)
 
         # Second row: Check happiness memories and End by pressing nose buttons
         second_row = BoxLayout(
@@ -140,15 +172,33 @@ class ChooseInteractType(BaseScreen):
             spacing=100,
             size_hint=(1, 0.2),  # Occupy 30% of the height
         )
-        memeries_button = RoundedButton(
-            text="Happiness Memories",
-            font_size=48,
-            size_hint=(0.4, 0.5),
-            custom_color=(0.9, 0.9, 0.9, 1),  # Gray
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
+
+        # Happiness Memories button
+        happiness_layout = InteractiveBoxLayout(
+            orientation="horizontal",
+            spacing=10,
+            size_hint=(0.4, 1),  # 40% of width
         )
-        second_row.add_widget(memeries_button)
-        memeries_button.bind(on_press=self.go_to_select_memeries)
+        happiness_icon = Image(
+            source="assets/happy.png",  # Replace with the actual path to your icon
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(0.4, 1),
+        )
+        happiness_label = Label(
+            text="Happiness Memories",
+            font_size=36,
+            color=(0, 0, 0, 1),
+            halign="center",
+            valign="middle",
+            size_hint=(0.6, 1),
+            font_name="assets/fonts/Poppins/Poppins-Medium.ttf",
+        )
+        happiness_label.bind(size=happiness_label.setter("text_size"))
+        happiness_layout.add_widget(happiness_icon)
+        happiness_layout.add_widget(happiness_label)
+        happiness_layout.bind(on_press=self.go_to_select_memeries)
+        second_row.add_widget(happiness_layout)
         
         hint_layout = BoxLayout(
             orientation="horizontal",

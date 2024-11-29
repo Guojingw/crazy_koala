@@ -22,7 +22,7 @@ class PhotoAudioScreen(BaseScreen):
         
         self.camera = None  # 摄像头实例
         self.preview_mode = False  # 是否为预览模式
-        self.default_photo_path = "assets\default_photo.jpg" # defalt figure path
+        self.default_photo_path = "assets\default_photo.png" # defalt figure path
         
         self.recording_active = False
         self.record_timer = 0
@@ -111,7 +111,7 @@ class PhotoAudioScreen(BaseScreen):
 
         # 图标（默认状态图标）
         self.status_icon = Image(
-            source="assets\image copy.png",  # 替换为你的图标路径
+            source="assets/Microphone.png",  # 替换为你的图标路径
             size_hint=(0.1, 1)
         )
         self.status_layout.add_widget(self.status_icon)

@@ -171,6 +171,8 @@ class ViewDepositInfoScreen(BaseScreen):
         self.manager.current = "select_take_screen"
 
     def navigate_to_open_door(self, mode):
-        open_door_screen = self.manager.get_screen("open_door_screen")
-        open_door_screen.set_mode(mode)
-        self.manager.current = "open_door_screen"
+        self.manager.switch_to("open_door_screen", mode="take")
+
+        # open_door_screen = self.manager.get_screen("open_door_screen")
+        # open_door_screen.set_mode(mode)
+        # self.manager.current = "open_door_screen"

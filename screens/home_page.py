@@ -30,7 +30,7 @@ class HomePage(BaseScreen):
         layout.add_widget(img)
 
         # 添加右侧文字布局
-        text_layout = BoxLayout(orientation="vertical", spacing=10)
+        text_layout = BoxLayout(orientation="vertical", spacing=5)
 
         # 主标题
         title_label = Label(
@@ -39,7 +39,7 @@ class HomePage(BaseScreen):
             color=(0, 0, 0, 1),
             halign="left",
             valign="bottom",
-            size_hint=(1, 0.5),
+            size_hint=(1, 0.6),
             font_name="assets/fonts/Poppins/Poppins-ExtraBold.ttf"
         )
         title_label.bind(size=title_label.setter("text_size"))
@@ -52,7 +52,7 @@ class HomePage(BaseScreen):
             color=(0, 0, 0, 1),
             halign="left",
             valign="top",
-            size_hint=(1, 0.3),
+            size_hint=(1, 0.2),
             font_name="assets/fonts/Poppins/Poppins-LightItalic.ttf"
         )
         second_label.bind(size=second_label.setter("text_size"))
@@ -61,12 +61,15 @@ class HomePage(BaseScreen):
 
         start_button = RoundedButton(
             text="Press Koala Nose To Start",
-            font_size=36,
-            size_hint=(1, 0.1),
+            font_size=24,
+            size_hint=(0.65, 0.1),
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         text_layout.add_widget(start_button)
+
+        spacer = BoxLayout(size_hint=(1, 0.1))
+        text_layout.add_widget(spacer)
 
         layout.add_widget(text_layout)
 

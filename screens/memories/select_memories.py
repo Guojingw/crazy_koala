@@ -27,7 +27,7 @@ class HappyMemoriesScreen(BaseScreen):
 
         # 添加标题栏
         title_bar = YellowTitleBar(
-            title_text="Happy Memories",
+            title_text="HAPPY MEMORIES",
             button_text="BACK",
             on_button_press=self.go_back
         )

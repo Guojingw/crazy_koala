@@ -1,9 +1,10 @@
 # from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.image import AsyncImage
 from kivy.uix.boxlayout import BoxLayout
-from screens.components import BaseScreen, RoundedButton, YellowBar, YellowTitleBar
+from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar, YellowTitleBar
 import os
 from playsound import playsound
 
@@ -31,14 +32,14 @@ class ViewDepositInfoScreen(BaseScreen):
         # 图片展示
         self.image_display = AsyncImage(
             source="",
-            size_hint=(1, 0.5),
+            size_hint=(1, 0.9),
             allow_stretch=True,
             keep_ratio=True
         )
         main_layout.add_widget(self.image_display)
 
         # 信息布局
-        info_layout = BoxLayout(orientation="horizontal", spacing=10, size_hint=(1, 0.3))
+        info_layout = BoxLayout(orientation="horizontal", spacing=5, size_hint=(1, 0.1))
 
         # 名字标签
         self.name_label = Label(
@@ -50,35 +51,12 @@ class ViewDepositInfoScreen(BaseScreen):
             size_hint=(1, 0.5)
         )
 
+        spacer = BoxLayout(size_hint=(0.35, 1))
+        info_layout.add_widget(spacer)
 
         # 音频播放按钮
-        audio_controls = BoxLayout(orientation="horizontal", size_hint=(0.5, 0.5), spacing=20)
-        self.play_button = RoundedButton(
-            text="PLAY AUDIO",
-            font_size=24,
-            size_hint=(None, 0.8),
-            width=200,
-            font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
-            on_press=self.play_audio
-        )
-        audio_controls.add_widget(self.play_button)
+        audio_controls = BoxLayout(orientation="horizontal", size_hint=(0.5, 1), spacing=20)
 
-        self.audio_label = Label(
-            text="Audio: Not Playing",
-            font_size=24,
-            color=(0, 0, 0, 1),
-            halign="left",
-            valign="middle",
-            size_hint=(0.6, 1),
-            font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
-        )
-        self.audio_label.bind(size=self.audio_label.setter("text_size"))
-        audio_controls.add_widget(self.audio_label)
-        info_layout.add_widget(audio_controls)
-        
-        spacer = BoxLayout(size_hint=(0.2, 1))
-        info_layout.add_widget(spacer)
-        
         # 存放时间标签
         self.time_label = Label(
             text="Deposit Time: Not Available",
@@ -86,12 +64,32 @@ class ViewDepositInfoScreen(BaseScreen):
             color=(0, 0, 0, 1),
             halign="left",
             valign="middle",
-            size_hint=(0.5, 0.5),
+            size_hint=(0.5, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.time_label.bind(size=self.time_label.setter("text_size"))
         info_layout.add_widget(self.time_label)
-        
+
+        play_layout = InteractiveBoxLayout(
+            orientation="horizontal",
+            spacing=10,
+            size_hint=(1, 1),
+        )
+        self.play_button = Image(
+            source="assets\Trumpet.png",
+            allow_stretch=True,
+            keep_ratio=True,
+            size_hint=(1, 1),
+        )
+
+        play_layout.add_widget(self.play_button)
+        play_layout.bind(on_press=self.play_audio)
+        audio_controls.add_widget(play_layout)
+
+        info_layout.add_widget(audio_controls)
+
+        spacer = BoxLayout(size_hint=(0.15, 1))
+        info_layout.add_widget(spacer)
 
         main_layout.add_widget(info_layout)
 
@@ -154,15 +152,15 @@ class ViewDepositInfoScreen(BaseScreen):
     def play_audio(self, instance):
         """播放音频"""
         if os.path.exists(self.audio_path):
-            self.audio_label.text = "Audio: Playing..."
+            # self.audio_label.text = "Audio: Playing..."
             try:
                 playsound(self.audio_path)
-                self.audio_label.text = "Audio: Finish Playing"
+                # self.audio_label.text = "Audio: Finish Playing"
             except Exception as e:
                 print(f"Error playing audio: {e}")
-                self.audio_label.text = "Audio: Not Playing"
-        else:
-            self.audio_label.text = "Audio: No Audio Message Left"
+                # self.audio_label.text = "Audio: Not Playing"
+        # else:
+            # self.audio_label.text = "Audio: No Audio Message Left"
 
     def go_back(self, instance):
         """返回上一个界面"""

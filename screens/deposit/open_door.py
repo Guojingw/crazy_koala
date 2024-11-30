@@ -70,7 +70,7 @@ class OpenDoorScreen(BaseScreen):
         next_button = RoundedButton(
             text="NEXT",
             font_size=24,
-            size_hint=(None, 1),
+            size_hint=(None, 0.7),
             width=200,
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"

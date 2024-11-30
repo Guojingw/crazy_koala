@@ -35,7 +35,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
         content_layout = BoxLayout(orientation="horizontal", size_hint=(1, 0.8), spacing=20)
 
         # Deposit 信息
-        deposit_layout = BoxLayout(orientation="vertical", spacing=10)
+        deposit_layout = BoxLayout(orientation="vertical", spacing=2)
         deposit_label = Label(
             text="DEPOSIT",
             font_size=36,
@@ -54,10 +54,10 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         self.deposit_time_label = Label(
             text="deposit_time",
-            font_size=36,
+            font_size=24,
             halign="center",
             valign="middle",
-            size_hint=(1, 0.2),
+            size_hint=(1, 0.1),
             color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
@@ -67,7 +67,7 @@ class ViewMemoriesDetailScreen(BaseScreen):
         content_layout.add_widget(deposit_layout)
 
         # Taken 信息
-        taken_layout = BoxLayout(orientation="vertical", spacing=10)
+        taken_layout = BoxLayout(orientation="vertical", spacing=2)
         taken_label = Label(
             text="TAKE",
             font_size=36,
@@ -86,10 +86,10 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         self.taken_time_label = Label(
             text="taken_time",
-            font_size=36,
+            font_size=24,
             halign="center",
             valign="middle",
-            size_hint=(1, 0.2),
+            size_hint=(1, 0.1),
             color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
@@ -103,19 +103,24 @@ class ViewMemoriesDetailScreen(BaseScreen):
         audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.1), spacing=20)
 
         self.play_deposit_audio_button = RoundedButton(
-            text="Play Deposit Audio",
-            font_size=36,
-            size_hint=(0.5, 1),
+            text="PLAY DEPOSIT AUDIO",
+            font_size=24,
+            size_hint=(None, 1),
+            width=300,
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=lambda instance: self.play_audio("deposit_audio_path")
         )
         audio_controls.add_widget(self.play_deposit_audio_button)
+
+        spacer = BoxLayout(size_hint=(0.5, 1))
+        audio_controls.add_widget(spacer)
         
         self.play_taken_audio_button = RoundedButton(
-            text="Play Taken Audio",
-            font_size=36,
-            size_hint=(0.5, 1),
+            text="PLAY TAKE AUDIO",
+            font_size=24,
+            size_hint=(None, 1),
+            width=300,
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf",
             on_press=lambda instance: self.play_audio("taken_audio_path")

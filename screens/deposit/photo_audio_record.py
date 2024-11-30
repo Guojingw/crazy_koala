@@ -81,7 +81,7 @@ class PhotoAudioScreen(BaseScreen):
         # 摄像头按钮
         self.camera_frame = RoundedButton(
             text="Open Camera",
-            font_size=36,
+            font_size=24,
             size_hint=(1, 1),
             custom_color=(0, 0, 0, 1),  # Gray
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
@@ -91,7 +91,7 @@ class PhotoAudioScreen(BaseScreen):
 
         self.record_button = RoundedButton(
             text="Record Audio",
-            font_size=36,
+            font_size=24,
             size_hint=(1, 1),
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
@@ -105,23 +105,23 @@ class PhotoAudioScreen(BaseScreen):
         # 状态标签
         self.status_layout = BoxLayout(
             orientation="horizontal",
-            size_hint=(1, 0.1),
-            spacing=10
+            size_hint=(0.7, 0.1),
+            spacing=5
         )
 
         # 图标（默认状态图标）
         self.status_icon = Image(
             source="assets/Microphone.png",  # 替换为你的图标路径
-            size_hint=(0.1, 1)
+            size_hint=(0.3, 1)
         )
         self.status_layout.add_widget(self.status_icon)
 
         # 标签
         self.status_label = Label(
             text="Ready to record audio",
-            font_size=36,
+            font_size=24,
             color=(0, 0, 0, 1),
-            size_hint=(0.9, 1),
+            size_hint=(0.7, 1),
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
         )
         self.status_layout.add_widget(self.status_label)
@@ -149,20 +149,6 @@ class PhotoAudioScreen(BaseScreen):
 
         # 底部按钮
         self.button_layout = BoxLayout(orientation="horizontal", spacing=20, size_hint=(1, 0.1))
-        
-        print(f"[DEBUG] With mode: {self.mode}")
-
-        if self.mode == "deposit":
-            back_button = RoundedButton(
-                text="BACK",
-                font_size=24,
-                size_hint=(None, 0.7),
-                width=200,
-                custom_color=(0, 0, 0, 1),  # 蓝色
-                font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
-            )
-            button_layout.add_widget(back_button)
-            back_button.bind(on_press=self.go_back)
 
         spacer = BoxLayout(size_hint=(1, 1))
         self.button_layout.add_widget(spacer)
@@ -170,7 +156,7 @@ class PhotoAudioScreen(BaseScreen):
         next_button = RoundedButton(
             text="NEXT",
             font_size=24,
-            size_hint=(None, 0.7),
+            size_hint=(None, 0.6),
             width=200,
             custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"

@@ -23,6 +23,8 @@ import serial
 import threading
 import time
 
+import asyncio
+
 class MyScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -71,6 +73,8 @@ class MyScreenManager(ScreenManager):
     def play_audio(self, audio_path):
         self.audio_player.play_audio(audio_path)
 
+    
+
 class CrazyKoalaApp(App):
     def build(self):
         self.screen_manager = MyScreenManager()
@@ -111,8 +115,11 @@ class CrazyKoalaApp(App):
         """处理接收到的串口输入"""
         if number == 0:
             print("Action: Play Goodbye audio.")
-            self.screen_manager.switch_back_to_home()
-            self.screen_manager.play_audio("assets\good_bye.wav")
+            # self.screen_manager.play_audio("assets\goodbye.wav")
+            # time.sleep(5)
+            # self.screen_manager.switch_back_to_home()
+            # threading.Thread(target=self.play_audio_and_switch, args=(self.screen_manager,)).start()
+            asyncio.run(self.play_audio_and_switch(self.screen_manager))
         elif number == 1:
             print("Action: Play welcome audio.")
             self.screen_manager.play_audio("assets\start_interact.wav")
@@ -124,6 +131,16 @@ class CrazyKoalaApp(App):
             self.screen_manager.play_audio("assets\meet_people.wav")
         else:
             print(f"Unhandled input: {number}")
+    
+    # def play_audio_and_switch(self, screen_manager):
+    #     self.screen_manager.play_audio("assets/goodbye.wav")
+    #     time.sleep(5)  # 允许音频播放结束的时间
+    #     self.screen_manager.switch_back_to_home()
+    
+    async def play_audio_and_switch(self, screen_manager):
+        await self.screen_manager.play_audio("assets/goodbye.wav")
+        await asyncio.sleep(5)
+        self.screen_manager.switch_back_to_home()
 
 if __name__ == "__main__":
     initialize_database()

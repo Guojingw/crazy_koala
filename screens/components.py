@@ -5,7 +5,6 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from playsound import playsound
-# from kivy.properties import ObjectProperty
 
 import os
 import threading

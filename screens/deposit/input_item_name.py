@@ -197,10 +197,7 @@ class InputNameScreen(BaseScreen):
             self.input_box.text += text
         elif keycode[1] == "backspace":
             self.input_box.text = self.input_box.text[:-1]
-    
-    def set_mode(self, mode):
-        self.mode = mode
-            
+
     def reset(self):
         """重置输入框内容"""
         self.input_box.text = ""
@@ -230,7 +227,6 @@ class InputNameScreen(BaseScreen):
         self.manager.get_screen("photo_audio_screen").item_name = name
         self.manager.switch_to("photo_audio_screen", mode="deposit")
 
-
     
     def show_error_popup(self, message):
         """显示错误提示"""
@@ -240,8 +236,8 @@ class InputNameScreen(BaseScreen):
         from kivy.uix.boxlayout import BoxLayout
 
         # 创建一个布局
-        layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
-        layout.add_widget(Label(text=message, font_size=36))
+        layout = BoxLayout(orientation="vertical", padding=24, spacing=10)
+        layout.add_widget(Label(text=message, font_size=24))
         close_button = Button(text="OK", size_hint=(1, 0.3), font_size=24)
         layout.add_widget(close_button)
 
@@ -249,7 +245,7 @@ class InputNameScreen(BaseScreen):
         popup = Popup(
             title="Invalid Input",
             content=layout,
-            size_hint=(0.6, 0.4),
+            size_hint=(0.6, 0.5),
             auto_dismiss=False,
         )
 

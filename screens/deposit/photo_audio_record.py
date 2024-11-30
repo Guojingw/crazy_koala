@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from screens.components import BaseScreen, RoundedButton, YellowBar
 from database.db_operations import insert_deposit, update_taken
+from kivy.core.image import Image as CoreImage
 
 import cv2
 import sounddevice as sd
@@ -63,6 +64,8 @@ class PhotoAudioScreen(BaseScreen):
             keep_ratio=True,
         )
         first_col.add_widget(self.image_widget)
+        
+        self.display_default_photo()
 
         # 动态调整图片高度以匹配比例
         def update_image_height(*args):
@@ -177,6 +180,16 @@ class PhotoAudioScreen(BaseScreen):
         layout.add_widget(end_bar)
 
         self.add_widget(layout)
+        
+    def display_default_photo(self):
+        """展示默认图片"""
+        try:
+            # 加载默认图片到纹理中
+            default_texture = CoreImage(self.default_photo_path).texture
+            self.image_widget.texture = default_texture
+            print(f"[DEBUG] Default photo displayed: {self.default_photo_path}")
+        except Exception as e:
+            print(f"[ERROR] Failed to load default photo: {e}")
 
 
     def toggle_camera_preview(self, instance):

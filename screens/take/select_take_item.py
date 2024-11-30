@@ -1,11 +1,10 @@
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.image import AsyncImage  # 用于加载图片
+from kivy.uix.image import AsyncImage
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from database.db_operations import fetch_unretrieved_items, fetch_item_details
-from screens.components import BaseScreen, RoundedButton, YellowTitleBar
+from screens.components import BaseScreen, YellowTitleBar
 import os
 
 class SelectTakeItemScreen(BaseScreen):
@@ -21,7 +20,7 @@ class SelectTakeItemScreen(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=20,
-            padding=[20, 20, 20, 20],  # Padding: [left, top, right, bottom]
+            padding=[20, 20, 20, 20],
         )
 
         # 添加标题栏
@@ -48,20 +47,19 @@ class SelectTakeItemScreen(BaseScreen):
     def load_items(self):
         """加载所有未取走的物品"""
         self.item_grid.clear_widgets()
-        items = fetch_unretrieved_items()  # 获取未取走的物品
+        items = fetch_unretrieved_items()
         total_items = len(items)
-        cols = 4  # 每行固定4列
+        cols = 4
 
         for name, photo_path in items:
-            # 创建一个可点击的区域（BoxLayout）
+
             clickable_area = BoxLayout(
                 orientation="vertical",
                 size_hint_y=None,
-                height=300,  # 固定高度
+                height=300,
                 padding=(5, 5, 5, 5),
             )
 
-            # 添加图片
             if photo_path and os.path.exists(photo_path):
                 img = AsyncImage(
                     source=photo_path,
@@ -112,7 +110,6 @@ class SelectTakeItemScreen(BaseScreen):
 
     def view_item(self, name):
         """查看物品详情"""
-        # 从数据库中获取物品的完整信息
         item = fetch_item_details(name)
 
         if item:

@@ -40,12 +40,13 @@ class MyScreenManager(ScreenManager):
         self.add_widget(ViewDepositInfoScreen(name="view_deposit_info_screen"))
         self.add_widget(HappyMemoriesScreen(name="happy_memories_screen"))
         self.add_widget(ViewMemoriesDetailScreen(name="view_memories_details_screen"))
+
+    def get_mode(self):
+        return self.mode
         
     def set_mode(self, mode):
         self.mode = mode
-        
-    def get_mode(self):
-        return self.mode
+
     
     def switch_to(self, screen_name, mode=None):
         """切换到指定屏幕并设置模式"""
@@ -56,9 +57,7 @@ class MyScreenManager(ScreenManager):
 
     def switch_to_choose_type(self):
         """切换到选择交互类型的屏幕"""
-        self.mode = None
-        self.get_screen("photo_audio_screen").set_mode(None)
-        self.current = "choose_interact_type"
+        self.switch_to("choose_interact_type", mode=None)
     
     def switch_back_to_home(self):
         """切换到选择交互类型的屏幕"""
@@ -91,7 +90,7 @@ class CrazyKoalaApp(App):
             while True:
                 # 检查是否有数据可读取
                 if ser.in_waiting > 0:
-                    data = ser.read(1)  # 读取1字节数据
+                    data = ser.read(1)
                     if data:
                         number = int.from_bytes(data, byteorder="little")
                         print(f"Received: {number}")
@@ -100,11 +99,11 @@ class CrazyKoalaApp(App):
                 # 检查开门触发器
                 if self.screen_manager.open_door_triggered:
                     print("Sending open door signal (byte4).")
-                    ser.write(bytes([4]))  # 发送开门信号
+                    ser.write(bytes([4]))
                     self.screen_manager.play_audio("assets\open_door.wav")
                     self.screen_manager.open_door_triggered = False
 
-                time.sleep(0.05)  # 降低CPU占用率
+                time.sleep(1)
         except Exception as e:
             print(f"Error in serial communication: {e}")
 

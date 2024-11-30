@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
-from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar, YellowTitleBar
+from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar
 
 class HomePage(BaseScreen):
     def __init__(self, **kwargs):
@@ -12,7 +12,7 @@ class HomePage(BaseScreen):
         layout = BoxLayout(
             orientation="horizontal",
             spacing=50,
-            padding=[100, 100, 100, 100],  # Padding: [left, top, right, bottom]
+            padding=[100, 100, 100, 100],
         )
 
         # 设置背景颜色为白色
@@ -23,13 +23,12 @@ class HomePage(BaseScreen):
 
         # 添加左侧图片
         img = Image(
-            source="assets\door_close.png",  # 替换为图片路径
+            source="assets\door_close.png",
             allow_stretch=True,
             keep_ratio=True
         )
         layout.add_widget(img)
 
-        # 添加右侧文字布局
         text_layout = BoxLayout(orientation="vertical", spacing=5)
 
         # 主标题
@@ -108,7 +107,7 @@ class ChooseInteractType(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=50,
-            padding=[100, 50, 100, 10],  # Padding: [left, top, right, bottom]
+            padding=[100, 50, 100, 10],
         )
 
         # First row: DEPOSIT and TAKE buttons
@@ -120,7 +119,7 @@ class ChooseInteractType(BaseScreen):
         deposit_layout = InteractiveBoxLayout(
             orientation="vertical",
             spacing=10,
-            size_hint=(0.4, 1),  # 40% of width
+            size_hint=(0.4, 1),
         )
         deposit_icon = Image(
             source="assets/deposit.png",
@@ -146,10 +145,10 @@ class ChooseInteractType(BaseScreen):
         take_layout = InteractiveBoxLayout(
             orientation="vertical",
             spacing=10,
-            size_hint=(0.4, 1),  # 40% of width
+            size_hint=(0.4, 1),
         )
         take_icon = Image(
-            source="assets/take.png",  # Replace with the actual path to your icon
+            source="assets/take.png",
             allow_stretch=True,
             keep_ratio=True,
             size_hint=(1, 0.8),
@@ -173,23 +172,23 @@ class ChooseInteractType(BaseScreen):
         second_row = BoxLayout(
             orientation="horizontal",
             spacing=100,
-            size_hint=(1, 0.2),  # Occupy 30% of the height
+            size_hint=(1, 0.2),
         )
 
         # Happiness Memories button
         happiness_layout = InteractiveBoxLayout(
             orientation="horizontal",
             spacing=10,
-            size_hint=(0.5, 1),  # 40% of width
+            size_hint=(0.5, 1),
         )
         happiness_icon = Image(
-            source="assets/happy.png",  # Replace with the actual path to your icon
+            source="assets/happy.png",
             allow_stretch=True,
             keep_ratio=True,
             size_hint=(0.3, 1),
         )
         happiness_label = Label(
-            text="Happiness Memories",
+            text="HAPPY MEMORY",
             font_size=36,
             color=(0, 0, 0, 1),
             halign="center",
@@ -246,16 +245,12 @@ class ChooseInteractType(BaseScreen):
         
     def go_to_input_name_screen(self, instance):
         """跳转到 InputNameScreen"""
-        # self.manager.mode = "deposit"
-        # self.manager.current = "input_name_screen"
         self.manager.switch_to("input_name_screen", mode="deposit")
     
     def go_to_select_take_screen(self, instance):
         """跳转到 SelectTakeItemScreen"""
-        # self.manager.mode = "take"
         take_item_screen = self.manager.get_screen("select_take_screen")
         take_item_screen.load_items()
-        # self.manager.current = "select_take_screen"
         self.manager.switch_to("select_take_screen", mode="take")
     
     def go_to_select_memeries(self, instance):

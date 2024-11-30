@@ -1,10 +1,8 @@
-# from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.image import AsyncImage
 from kivy.uix.boxlayout import BoxLayout
-from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar, YellowTitleBar
+from screens.components import BaseScreen, InteractiveBoxLayout, RoundedButton, YellowBar
 import os
 from playsound import playsound
 
@@ -23,7 +21,6 @@ class ViewDepositInfoScreen(BaseScreen):
             padding=[100, 20, 100, 20],
         )
 
-        # 添加 YellowBar
         self.title_bar = YellowBar(
             title_text="",
         )
@@ -38,7 +35,6 @@ class ViewDepositInfoScreen(BaseScreen):
         )
         main_layout.add_widget(self.image_display)
 
-        # 信息布局
         info_layout = BoxLayout(orientation="horizontal", spacing=5, size_hint=(1, 0.1))
 
         # 名字标签
@@ -134,7 +130,6 @@ class ViewDepositInfoScreen(BaseScreen):
         """根据当前选择的物品设置界面内容"""
         current_item = self.manager.current_item
         if current_item:
-            # Update the title bar with the item name
             self.title_bar.update_title(current_item.get("name", "No Name Available"))
 
             self.image_path = current_item.get("image_path", "")
@@ -152,15 +147,10 @@ class ViewDepositInfoScreen(BaseScreen):
     def play_audio(self, instance):
         """播放音频"""
         if os.path.exists(self.audio_path):
-            # self.audio_label.text = "Audio: Playing..."
             try:
                 playsound(self.audio_path)
-                # self.audio_label.text = "Audio: Finish Playing"
             except Exception as e:
                 print(f"Error playing audio: {e}")
-                # self.audio_label.text = "Audio: Not Playing"
-        # else:
-            # self.audio_label.text = "Audio: No Audio Message Left"
 
     def go_back(self, instance):
         """返回上一个界面"""
@@ -169,7 +159,3 @@ class ViewDepositInfoScreen(BaseScreen):
 
     def navigate_to_open_door(self, mode):
         self.manager.switch_to("open_door_screen", mode="take")
-
-        # open_door_screen = self.manager.get_screen("open_door_screen")
-        # open_door_screen.set_mode(mode)
-        # self.manager.current = "open_door_screen"

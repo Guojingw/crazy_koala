@@ -1,9 +1,9 @@
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
-from kivy.uix.image import AsyncImage  # 用于加载图片
+from kivy.uix.image import AsyncImage
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
-from database.db_operations import fetch_all_items, fetch_item_details
+from database.db_operations import fetch_all_items
 from screens.components import BaseScreen, YellowTitleBar
 import os
 
@@ -21,10 +21,8 @@ class HappyMemoriesScreen(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=20,
-            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
+            padding=[100, 20, 100, 20],
         )
-        # main_layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
-
         # 添加标题栏
         title_bar = YellowTitleBar(
             title_text="HAPPY MEMORIES",
@@ -67,7 +65,7 @@ class HappyMemoriesScreen(BaseScreen):
                 clickable_area = BoxLayout(
                     orientation="vertical",
                     size_hint_y=None,
-                    height=300,  # 固定高度
+                    height=300,
                     padding=(5, 5, 5, 5),
                 )
 
@@ -76,8 +74,8 @@ class HappyMemoriesScreen(BaseScreen):
                     img = AsyncImage(
                         source=photo_path,
                         allow_stretch=True,
-                        keep_ratio=True,  # 确保图片比例一致
-                        size_hint=(1, 0.8),  # 图片占据 80% 高度
+                        keep_ratio=True,
+                        size_hint=(1, 0.8),
                     )
                 else:
                     img = Label(
@@ -95,7 +93,7 @@ class HappyMemoriesScreen(BaseScreen):
                     text=name,
                     font_size=24,
                     color=(0, 0, 0, 1),
-                    size_hint=(1, 0.2),  # 调整名称高度为 20%
+                    size_hint=(1, 0.2),
                     halign="center",
                     valign="middle",
                     font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
@@ -113,19 +111,17 @@ class HappyMemoriesScreen(BaseScreen):
         # 计算需要补充的空白占位符
         empty_slots = cols - (total_items % cols) if total_items % cols != 0 else 0
         for _ in range(empty_slots):
-            empty_box = BoxLayout(size_hint_y=None, height=100)  # 空白占位符
+            empty_box = BoxLayout(size_hint_y=None, height=100)
             self.item_grid.add_widget(empty_box)
 
 
     def handle_touch(self, instance, touch, name):
         """处理点击事件"""
-        if instance.collide_point(*touch.pos):  # 检查点击是否在组件范围内
+        if instance.collide_point(*touch.pos):
             print(f"Selected item: {name}")
-            self.view_item(name)  # 调用查看详情的逻辑
-
+            self.view_item(name)
     def view_item(self, item):
         """查看物品详情"""
-        # 将当前物品信息存储到 ScreenManager 中
         self.manager.current_item = {
             "name": item["name"],
             "deposit_photo_path": item["deposit_photo_path"],

@@ -1,4 +1,3 @@
-from tkinter import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -11,9 +10,8 @@ class CustomKeyboard(BoxLayout):
     def __init__(self, target_input, **kwargs):
         super().__init__(orientation="vertical", **kwargs)
         self.target_input = target_input
-        self.is_caps = False  # 控制大小写
+        self.is_caps = False
 
-        # 定义英文键盘布局
         self.layout = [
             "1234567890",
             "qwertyuiop",
@@ -26,7 +24,7 @@ class CustomKeyboard(BoxLayout):
 
     def create_keyboard(self):
         """创建键盘布局"""
-        # 主键盘部分
+
         keyboard_layout = GridLayout(
             cols=10,
             spacing=2,
@@ -123,7 +121,7 @@ class InputNameScreen(BaseScreen):
         prompt_label = Label(
             text="Please enter your item name:",
             font_size=36,
-            color=(0, 0, 0, 1),  # 黑色字体
+            color=(0, 0, 0, 1),
             halign="left",
             valign="center",
             size_hint=(1, 0.1),
@@ -224,17 +222,12 @@ class InputNameScreen(BaseScreen):
         folder_path = f"data/{name}"
         if os.path.exists(folder_path):
             print(f"A folder with the name '{name}' already exists. Please choose a different name.")
-            # 显示一个提示对话框或在界面上更新提示
             self.show_error_popup(f"An item with the name '{name}' already exists.\nPlease choose a different name.")
             return
 
-        # 文件夹不存在，正常跳转
         self.reset() 
         
         self.manager.get_screen("photo_audio_screen").item_name = name
-        # photo_audio_screen = self.manager.get_screen("photo_audio_screen")
-        # photo_audio_screen.set_mode("deposit")
-        # self.manager.current = "photo_audio_screen"
         self.manager.switch_to("photo_audio_screen", mode="deposit")
 
 

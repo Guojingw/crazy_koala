@@ -1,11 +1,11 @@
-from kivy.graphics import Color, Ellipse, Rectangle
+from kivy.graphics import Color, Rectangle
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from playsound import playsound
-from kivy.properties import ObjectProperty
+# from kivy.properties import ObjectProperty
 
 import os
 import threading
@@ -16,7 +16,7 @@ class BaseScreen(Screen):
 
         # 设置白色背景
         with self.canvas.before:
-            Color(1, 1, 1, 1)  # 白色
+            Color(1, 1, 1, 1)
             self.bg = Rectangle(size=self.size, pos=self.pos)
 
         # 绑定窗口大小和位置的变化
@@ -37,37 +37,37 @@ class RoundedButton(Button):
         :param corner_radius: Radius for rounded corners (in pixels)
         """
         super().__init__(**kwargs)
-        self.background_normal = ""  # Remove default background
-        self.background_color = (0, 0, 0, 0)  # Transparent background
+        self.background_normal = ""
+        self.background_color = (0, 0, 0, 0)
         self.custom_color = custom_color
-        self.corner_radius = corner_radius  # Store corner radius
+        self.corner_radius = corner_radius
         self.bind(pos=self.update_canvas, size=self.update_canvas)
 
     def update_canvas(self, *args):
         """Dynamically update the button's canvas for rounded corners."""
         self.canvas.before.clear()
         with self.canvas.before:
-            Color(*self.custom_color)  # Apply background color
+            Color(*self.custom_color)
             RoundedRectangle(
                 pos=self.pos,
                 size=self.size,
-                radius=[(self.corner_radius, self.corner_radius),  # Top-left
-                        (self.corner_radius, self.corner_radius),  # Top-right
-                        (self.corner_radius, self.corner_radius),  # Bottom-right
-                        (self.corner_radius, self.corner_radius)]  # Bottom-left
+                radius=[(self.corner_radius, self.corner_radius),
+                        (self.corner_radius, self.corner_radius),
+                        (self.corner_radius, self.corner_radius),
+                        (self.corner_radius, self.corner_radius)]
             )
 
 class YellowTitleBar(BoxLayout):
     def __init__(self, title_text="Title", button_text="BACK", on_button_press=None, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.size_hint = (1, 0.08)  # 高度为总高度的 10%
-        self.padding = [10, 5, 10, 5]  # 左、上、右、下的内边距
-        self.spacing = 10  # 子组件之间的间距
+        self.size_hint = (1, 0.08)
+        self.padding = [10, 5, 10, 5]
+        self.spacing = 10
 
         # 设置背景颜色
         with self.canvas.before:
-            Color(1, 0.9, 0, 1)  # 黄色背景
+            Color(1, 0.9, 0, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
         self.bind(size=self.update_rect, pos=self.update_rect)
 
@@ -75,11 +75,10 @@ class YellowTitleBar(BoxLayout):
         self.back_button = RoundedButton(
             text=button_text,
             font_size=24,
-            size_hint=(None, 0.9),  # 占整个 bar 的宽度 20% 和高度 80%
-            width=140,
-            custom_color=(0, 0, 0, 1),  # 黑色背景
+            size_hint=(None, 0.9),
+            width=150,
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
-            # corner_radius=20  # 圆角大小
         )
 
         if on_button_press:
@@ -116,12 +115,12 @@ class YellowBar(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
         self.size_hint = (1, 0.08)
-        self.padding = [10, 5, 10, 5]  # 左、上、右、下的内边距
-        self.spacing = 10  # 子组件之间的间距
+        self.padding = [10, 5, 10, 5]
+        self.spacing = 10
 
         # 设置背景颜色
         with self.canvas.before:
-            Color(1, 0.9, 0, 1)  # 黄色背景
+            Color(1, 0.9, 0, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
         self.bind(size=self.update_rect, pos=self.update_rect)
 
@@ -129,9 +128,9 @@ class YellowBar(BoxLayout):
         # 添加标题文本
         self.title_label = Label(
             text=title_text,
-            size_hint=(0.7, 1),  # 占整个 bar 宽度的 70%
-            color=(0, 0, 0, 1),  # 黑色文字
-            font_size=36,  # 调整字体大小
+            size_hint=(0.7, 1),
+            color=(0, 0, 0, 1),
+            font_size=36,
             halign="center",
             valign="middle",
             font_name="assets/fonts/Poppins/Poppins-Medium.ttf"
@@ -160,7 +159,6 @@ class AudioPlayer():
 
         print(f"Playing Audio: {file_path}")
         
-        # 使用线程播放音频，避免阻塞主线程
         threading.Thread(target=self._play_audio_thread, args=(file_path,), daemon=True).start()
 
     def _play_audio_thread(self, file_path):
@@ -175,12 +173,12 @@ class AudioPlayer():
 class InteractiveBoxLayout(BoxLayout):
     # 注册一个自定义事件
     def __init__(self, **kwargs):
-        self.register_event_type('on_press')  # 注册自定义事件
+        self.register_event_type('on_press')
         super().__init__(**kwargs)
 
     def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):  # 检查触摸是否在组件范围内
-            self.dispatch('on_press')  # 分发自定义事件
+        if self.collide_point(*touch.pos):
+            self.dispatch('on_press')
             return True
         return super().on_touch_down(touch)
 

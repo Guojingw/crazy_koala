@@ -55,21 +55,27 @@ def fetch_all_items():
         print("No items found in the database!")
         return []
 
-    # 显式转换为字典
-    items = [
-        {
-            "id": row[0],
-            "name": row[1],
-            "deposit_photo_path": row[2],
-            "deposit_audio_path": row[3],
-            "deposit_created_at": row[4],
-            "taken_photo_path": row[5],
-            "taken_audio_path": row[6],
-            "taken_created_at": row[7],
-        }
-        for row in rows
-    ]
-    return items
+    valid_items = []
+    for row in rows:
+        deposit_photo_path = row[2]
+        taken_photo_path = row[5]
+        
+        # 检查路径是否存在且数据完整
+        if deposit_photo_path and os.path.exists(deposit_photo_path) and taken_photo_path and os.path.exists(taken_photo_path):
+            valid_items.append({
+                "id": row[0],
+                "name": row[1],
+                "deposit_photo_path": deposit_photo_path,
+                "deposit_audio_path": row[3],
+                "deposit_created_at": row[4],
+                "taken_photo_path": taken_photo_path,
+                "taken_audio_path": row[6],
+                "taken_created_at": row[7],
+            })
+        else:
+            print(f"[DEBUG] Invalid or missing file for item: {row[1]} (ID: {row[0]})")
+
+    return valid_items
 
 
 def fetch_unretrieved_items():
@@ -88,8 +94,12 @@ def fetch_unretrieved_items():
     items = cursor.fetchall()
 
     conn.close()
-    valid_items = [(name, photo) for name, photo in items if photo and os.path.exists(photo)]
-    return valid_items
+    valid_items = {}
+    for name, photo in items:
+        if photo and os.path.exists(photo):
+            valid_items[name] = photo
+
+    return list(valid_items.items())
 
 def fetch_item_details(name):
     """根据名字从数据库中获取物品详情"""

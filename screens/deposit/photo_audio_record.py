@@ -17,17 +17,17 @@ from kivy.graphics.texture import Texture
 class PhotoAudioScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.item_name = None  # 物品名称
+        self.item_name = None
         self.photo_path = None
         self.audio_path = None
         
-        self.camera = None  # 摄像头实例
-        self.preview_mode = False  # 是否为预览模式
-        self.default_photo_path = "assets\default_photo.png" # defalt figure path
+        self.camera = None
+        self.preview_mode = False
+        self.default_photo_path = "assets\default_photo.png"
         
         self.recording_active = False
         self.record_timer = 0
-        self.max_duration = 60  # 最长录音时长，单位为秒
+        self.max_duration = 60
         self.default_audio_path = "assets\default_audio.wav"
         
         self.mode = None
@@ -86,7 +86,7 @@ class PhotoAudioScreen(BaseScreen):
             text="Open Camera",
             font_size=24,
             size_hint=(1, 1),
-            custom_color=(0, 0, 0, 1),  # Gray
+            custom_color=(0, 0, 0, 1),
             font_name="assets/fonts/Poppins/Poppins-Bold.ttf"
         )
         button_layout.add_widget(self.camera_frame)
@@ -114,7 +114,7 @@ class PhotoAudioScreen(BaseScreen):
 
         # 图标（默认状态图标）
         self.status_icon = Image(
-            source="assets/Microphone.png",  # 替换为你的图标路径
+            source="assets/Microphone.png",
             size_hint=(0.3, 1)
         )
         self.status_layout.add_widget(self.status_icon)
@@ -195,29 +195,24 @@ class PhotoAudioScreen(BaseScreen):
     def toggle_camera_preview(self, instance):
         """打开或关闭摄像头实时预览"""
         if not self.preview_mode:
-            # 启动摄像头预览
             self.camera = cv2.VideoCapture(0)
             if not self.camera.isOpened():
                 print("Error: Cannot access the camera")
                 return
             self.preview_mode = True
             self.camera_frame.text = "Capture Photo"
-            Clock.schedule_interval(self.update_camera_preview, 1.0 / 30.0)  # 每秒30帧
+            Clock.schedule_interval(self.update_camera_preview, 1.0 / 30.0)
         else:
-            # 捕获照片并关闭摄像头预览
             ret, frame = self.camera.read()
             if ret:
-                # 保存照片
                 temp_folder = "temp"
                 if not os.path.exists(temp_folder):
                     os.makedirs(temp_folder)
 
-                # 删除临时目录中已有的照片
                 for file in os.listdir(temp_folder):
                     if file.endswith(".jpg"):
                         os.remove(os.path.join(temp_folder, file))
 
-                # 保存新照片到临时目录
                 self.photo_path = os.path.join(temp_folder, "temp_photo.jpg")
                 cv2.imwrite(self.photo_path, frame)
                 print(f"Photo temporarily saved: {self.photo_path}")
@@ -241,7 +236,6 @@ class PhotoAudioScreen(BaseScreen):
             if ret:
                 frame = cv2.rotate(frame, cv2.ROTATE_180)
                 
-                # 转换 BGR 到 RGB
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 buf = frame.tobytes()
                 texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='rgb')
@@ -288,7 +282,7 @@ class PhotoAudioScreen(BaseScreen):
             self.recording = sd.rec(int(self.max_duration * self.fs), samplerate=self.fs, channels=1, dtype='int16')
             self.recording_active = True
             self.record_timer = 0
-            Clock.schedule_interval(self.update_recording_status, 1.0)  # 每秒更新状态
+            Clock.schedule_interval(self.update_recording_status, 1.0)
             self.status_label.text = "Recording... 0s"
             self.record_button.text = "Stop Recording"
             print("Recording started.")
@@ -302,10 +296,9 @@ class PhotoAudioScreen(BaseScreen):
 
         try:
             sd.stop()
-            Clock.unschedule(self.update_recording_status)  # 停止更新状态
+            Clock.unschedule(self.update_recording_status)
             self.recording_active = False
 
-            # 保存录音
             with wave.open(self.audio_path, 'w') as wf:
                 wf.setnchannels(1)
                 wf.setsampwidth(2)
@@ -330,12 +323,11 @@ class PhotoAudioScreen(BaseScreen):
     
     def on_enter(self):
         """根据全局模式动态更新界面"""
-        mode = self.manager.get_mode()  # 从全局 ScreenManager 获取 mode
+        mode = self.manager.get_mode()
         self.mode = mode
         if mode == "deposit":
             self.title_bar.update_title("DEPOSIT")
             self.status_label.text = "Ready to record audio for deposit."
-            # self.add_back_button(self.button_layout)
         elif mode == "take":
             self.title_bar.update_title("TAKE")
             self.status_label.text = "Ready to record audio for retrieval."
@@ -354,6 +346,7 @@ class PhotoAudioScreen(BaseScreen):
         self.recording_active = False
         self.record_timer = 0
         self.preview_mode = False
+        self.display_default_photo()
 
         # 停止摄像头预览（如果未停止）
         if self.camera:
@@ -383,7 +376,6 @@ class PhotoAudioScreen(BaseScreen):
 
     def go_back(self, instance):
         """返回上一个界面并清理临时数据"""
-        # 清理临时目录中的照片
         temp_folder = "temp"
         if os.path.exists(temp_folder):
             for file in os.listdir(temp_folder):
@@ -397,12 +389,10 @@ class PhotoAudioScreen(BaseScreen):
     def save_file(self, file_path, default_path, folder_path, file_name):
         """保存文件到指定文件夹，如果文件不存在则使用默认文件"""
         if file_path and os.path.exists(file_path):
-            # 移动文件到目标文件夹
             final_path = os.path.join(folder_path, file_name)
             os.rename(file_path, final_path)
             print(f"File moved to: {final_path}")
         else:
-            # 使用默认文件
             final_path = os.path.join(folder_path, file_name)
             if not os.path.exists(final_path):
                 if os.path.exists(default_path):
@@ -414,7 +404,6 @@ class PhotoAudioScreen(BaseScreen):
     def go_next(self, instance):
         """跳过到下一个界面"""
 
-        # 更新数据库中的照片和音频路径
         if self.manager.get_mode() == "deposit":
             self.prepare_folder()
             self.photo_path = self.save_file(
@@ -431,7 +420,6 @@ class PhotoAudioScreen(BaseScreen):
                 file_name=f"{self.item_name}_deposit_audio.wav"
             )
             
-            # 保存到数据库
             insert_deposit(
                 name=self.item_name,
                 deposit_photo_path=self.photo_path,
@@ -443,12 +431,10 @@ class PhotoAudioScreen(BaseScreen):
             self.reset()
             self.manager.switch_to("open_door_screen", mode="deposit")
 
-            # self.manager.current = "open_door_screen"
-        else:  # take 模式
-            # 假设 current_item 是当前选中的物品
+        else:
             current_item = self.manager.current_item
             if current_item:
-                self.item_name = current_item["name"]  # 获取当前物品的 ID
+                self.item_name = current_item["name"]
                 print(f"item name {self.item_name}")
 
                 self.prepare_folder()

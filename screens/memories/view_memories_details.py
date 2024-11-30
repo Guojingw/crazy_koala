@@ -1,7 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
-from kivy.uix.button import Button
 from screens.components import BaseScreen, RoundedButton, YellowBar, YellowTitleBar
 from playsound import playsound
 import os
@@ -20,21 +19,18 @@ class ViewMemoriesDetailScreen(BaseScreen):
         main_layout = BoxLayout(
             orientation="vertical",
             spacing=20,
-            padding=[100, 20, 100, 20],  # Padding: [left, top, right, bottom]
+            padding=[100, 20, 100, 20],
         )
 
-        # 添加 YellowBar
         self.title_bar = YellowTitleBar(
-            title_text="Item Name",  # Placeholder text, will update on_enter
+            title_text="Item Name",
             button_text="BACK",
             on_button_press=self.go_back,
         )
         layout.add_widget(self.title_bar)
 
-        # 内容布局
         content_layout = BoxLayout(orientation="horizontal", size_hint=(1, 0.8), spacing=20)
 
-        # Deposit 信息
         deposit_layout = BoxLayout(orientation="vertical", spacing=2)
         deposit_label = Label(
             text="DEPOSIT",
@@ -66,7 +62,6 @@ class ViewMemoriesDetailScreen(BaseScreen):
 
         content_layout.add_widget(deposit_layout)
 
-        # Taken 信息
         taken_layout = BoxLayout(orientation="vertical", spacing=2)
         taken_label = Label(
             text="TAKE",
@@ -99,7 +94,6 @@ class ViewMemoriesDetailScreen(BaseScreen):
         content_layout.add_widget(taken_layout)
         main_layout.add_widget(content_layout)
 
-        # 音频播放按钮布局
         audio_controls = BoxLayout(orientation="horizontal", size_hint=(1, 0.1), spacing=20)
 
         self.play_deposit_audio_button = RoundedButton(
@@ -140,14 +134,11 @@ class ViewMemoriesDetailScreen(BaseScreen):
         """进入界面时更新内容"""
         current_item = self.manager.current_item
         if current_item:
-            # 更新标题栏
             self.title_bar.update_title(current_item.get("name", "No Name Available"))
 
-            # 更新存储信息
             self.deposit_image.source = current_item.get("deposit_photo_path", "")
             self.deposit_time_label.text = f"Deposit Time: {current_item.get('deposit_time', 'Not Available')}"
 
-            # 更新取走信息
             self.taken_image.source = current_item.get("taken_photo_path", "")
             self.taken_time_label.text = f"Taken Time: {current_item.get('taken_time', 'Not Available')}"
         else:

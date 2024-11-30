@@ -7,7 +7,6 @@ from kivy.uix.image import Image
 class OpenDoorScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.mode = "deposit"
 
         layout = BoxLayout(
             orientation="vertical",
@@ -95,7 +94,7 @@ class OpenDoorScreen(BaseScreen):
     
     def on_enter(self):
         """动态更新界面"""
-        mode = self.manager.get_mode()  # 获取全局 mode
+        mode = self.manager.get_mode()
         self.mode = mode
         if mode == "deposit":
             self.title_bar.update_title("DEPOSIT")

@@ -82,13 +82,13 @@ class CrazyKoalaApp(App):
 
     def on_start(self):
         # 启动串口通信线程
-        self.serial_thread = threading.Thread(target=self.serial_comm, daemon=True)
-        self.serial_thread.start()
+        self.serial_thread9 = threading.Thread(target=self.serial_comm, daemon=True)
+        # self.serial_thread.start()
 
     def serial_comm(self):
         """串口通信线程"""
         try:
-            ser = serial.Serial("COM4", baudrate=115200, timeout=1)
+            ser = serial.Serial("COM3", baudrate=115200, timeout=1)
             print("Serial connection established.")
 
             while True:
@@ -115,11 +115,11 @@ class CrazyKoalaApp(App):
         """处理接收到的串口输入"""
         if number == 0:
             print("Action: Play Goodbye audio.")
-            # self.screen_manager.play_audio("assets\goodbye.wav")
+            self.screen_manager.play_audio("assets\goodbye.wav")
             # time.sleep(5)
-            # self.screen_manager.switch_back_to_home()
+            self.screen_manager.switch_back_to_home()
             # threading.Thread(target=self.play_audio_and_switch, args=(self.screen_manager,)).start()
-            asyncio.run(self.play_audio_and_switch(self.screen_manager))
+            # asyncio.run(self.play_audio_and_switch(self.screen_manager))
         elif number == 1:
             print("Action: Play welcome audio.")
             self.screen_manager.play_audio("assets\start_interact.wav")
@@ -137,10 +137,10 @@ class CrazyKoalaApp(App):
     #     time.sleep(5)  # 允许音频播放结束的时间
     #     self.screen_manager.switch_back_to_home()
     
-    async def play_audio_and_switch(self, screen_manager):
-        await self.screen_manager.play_audio("assets/goodbye.wav")
-        await asyncio.sleep(5)
-        self.screen_manager.switch_back_to_home()
+    # async def play_audio_and_switch(self, screen_manager):
+    #     await self.screen_manager.play_audio("assets/goodbye.wav")
+    #     await asyncio.sleep(5)
+    #     self.screen_manager.switch_back_to_home()
 
 if __name__ == "__main__":
     initialize_database()

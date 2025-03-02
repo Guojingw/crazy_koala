@@ -59,7 +59,7 @@ class HappyMemoriesScreen(BaseScreen):
         for item in items:
             try:
                 name = item["name"]
-                photo_path = item["deposit_photo_path"]
+                photo_path = item["taken_photo_path"]
 
                 # 创建一个可点击的区域（BoxLayout）
                 clickable_area = BoxLayout(
